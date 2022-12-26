@@ -28,4 +28,5 @@
 | utilisateur | pouvoir ajouter un compte mail | ajouter un utilisteur pouvant suivre ou modifier ma liste de produit |
 | utilisateur | pouvoir supprimer un compte mail | supprimer l'accés à un utilisateur à ma liste de produit |
 | utilisateur | modifier mon mot de passe | mettre a jour mon mot de passe |
+| utilisateur | modifier mon image de profile | mettre a jour mon image |
 
