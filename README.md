@@ -25,8 +25,9 @@
 | utilisateur | pouvoir ajouter un produit | ajouter un produits à ma liste |
 | utilisateur | pouvoir supprimer un produit | supprimer un produits de ma liste |
 | utilisateur | pouvoir modifier un produit | modifier un produits |
-| utilisateur | pouvoir ajouter un compte mail | ajouter un utilisteur pouvant suivre ou modifier ma liste de produit |
-| utilisateur | pouvoir supprimer un compte mail | supprimer l'accés à un utilisateur à ma liste de produit |
+| utilisateur | pouvoir ajouter un ami | ajouter un utilisteur pouvant suivre ou modifier ma liste de produit |
+| utilisateur | pouvoir supprimer un ami | supprimer l'accés à un utilisateur à ma liste de produit |
+| utilisateur | pouvoir voir les détails d'un ami | voir le profil de l'utilisateur |
 | utilisateur | modifier mon mot de passe | mettre a jour mon mot de passe |
 | utilisateur | modifier mon image de profile | mettre a jour mon image |
 
