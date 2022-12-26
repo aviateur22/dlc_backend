@@ -9,7 +9,7 @@
 - products: une liste de produit
 - productImageUrl: image du produit
 - productOpenDate: date d'ouverture d'un produit
-- productOpenDays: nombre de jour d'ouverture
+- productOpenTime: temps d'ouverture d'un produit
 - productCreate: Date d'ajout du produit
 - account: compte d'un user
 - friendEmail: email compte ami
