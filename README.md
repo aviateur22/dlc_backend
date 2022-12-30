@@ -24,7 +24,6 @@
 | utilisateur | pouvoir me déconnecter |ne plus être authentifié |
 | utilisateur | pouvoir ajouter un produit | ajouter un produits à ma liste |
 | utilisateur | pouvoir supprimer un produit | supprimer un produits de ma liste |
-| utilisateur | pouvoir modifier un produit | modifier un produits |
 | utilisateur | pouvoir ajouter un ami | ajouter un utilisteur pouvant suivre ou modifier ma liste de produit |
 | utilisateur | pouvoir supprimer un ami | supprimer l'accés à un utilisateur à ma liste de produit |
 | utilisateur | pouvoir voir les détails d'un ami | voir le profil de l'utilisateur |
