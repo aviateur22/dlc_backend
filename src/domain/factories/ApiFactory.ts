@@ -1,5 +1,7 @@
 import { UserInputModel } from "../inputs/user/UserInputModel";
 import { UserInputInterface } from "../inputs/user/UserInputInterface";
+import { UserRepositoryInterface } from "../provider/repositories/userRepository/UserRepositoryInterface";
+import { InMemoryUserRepository } from "../stubes/InMemoryUserRepository";
 
 /**
  * Factory pour charger les class 
@@ -17,7 +19,9 @@ class ApiFactory {
     return new UserInputModel(email, name, password);
   }
 
-  
+  static getUserRepositoryModel(): UserRepositoryInterface {
+    return new InMemoryUserRepository();
+  }
 }
 
 export { ApiFactory };

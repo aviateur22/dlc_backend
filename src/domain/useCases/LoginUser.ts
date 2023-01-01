@@ -1,19 +1,19 @@
 import { UserInputInterface } from "../inputs/user/UserInputInterface";
-import { UserInputModel } from "../inputs/user/UserInputModel";
 import { UserEntity } from "../entities/UserEntity";
 import { ResponseFactory } from "../factories/ResponseFactory";
-import { LoginUserOutput } from "../outputs/LoginUserOutput";
+import { UserRepositoryInterface } from "../provider/repositories/userRepository/UserRepositoryInterface";
 
 /**
  * Usecase Connexion client
  */
 class LoginUser {
-  protected userInputModel: UserInputModel;
-  protected userLoginResponse: LoginUserOutput | undefined;
+  protected userInputModel: UserInputInterface;
   protected userEntity: UserEntity | undefined;
+  protected userRepository: UserRepositoryInterface;
 
-  constructor(userInputModel: UserInputInterface) {
+  constructor(userInputModel: UserInputInterface, userRepository: UserRepositoryInterface) {
     this.userInputModel = userInputModel;
+    this.userRepository = userRepository;
   }
 
   /**
