@@ -1,6 +1,6 @@
 import { UserInputModel } from "../inputs/user/UserInputModel";
 import { UserInputInterface } from "../inputs/user/UserInputInterface";
-import { UserRepositoryInterface } from "../provider/repositories/userRepository/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../provider/userRepository/UserRepositoryInterface";
 import { InMemoryUserRepository } from "../stubes/InMemoryUserRepository";
 
 /**

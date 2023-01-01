@@ -1,7 +1,7 @@
 import { UserInputInterface } from "../inputs/user/UserInputInterface";
 import { UserEntity } from "../entities/UserEntity";
-import { ResponseFactory } from "../factories/ResponseFactory";
-import { UserRepositoryInterface } from "../provider/repositories/userRepository/UserRepositoryInterface";
+import { UserRepositoryInterface } from "../provider/userRepository/UserRepositoryInterface";
+import { UserDto } from "../dto/UserDto";
 
 /**
  * Usecase Connexion client
@@ -20,11 +20,17 @@ class LoginUser {
    * Exécution du useCase LoginUser
    * @returns {UserReponseModelInterface}
    */
-  execute(): UserOutputInterface {
-    this.userEntity = new UserEntity('', '', '', '');
-    const userModelResponse = ResponseFactory.getUserResponseModel(this.userEntity.email, this.userEntity.name, this.userEntity.userImageUrl);
+  findLoginUser(): UserOutputInterface|null {
+
+    // Récupération utilisateur en base de données
+    const findLoginUser = this.userRepository.getOneUser(this.userInputModel);
     
-    return userModelResponse;
+    if(!findLoginUser) {
+      return null;
+    }
+
+    // Map le résultat 
+    return new UserDto(findLoginUser).userDto();
   }
 }
 

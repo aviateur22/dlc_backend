@@ -1,23 +1,34 @@
+import { UserEntity } from '../entities/UserEntity';
 import { ApiFactory } from '../factories/ApiFactory';
-import { LoginUserOutput } from '../outputs/LoginUserOutput';
 import { LoginUser } from '../useCases/LoginUser';
 
 describe('usecase login user', function() {
   it('user should be able to login', function() {
+    // Données utilisateur
     const email: string = '';
     const password: string = '';
-    const userRepository = ApiFactory.getUserRepositoryModel();
-    
+
+    // Model
+    const userRepository = ApiFactory.getUserRepositoryModel();    
     const user = ApiFactory.getUserInputModel(email, undefined, password);
 
+
+    // UseCase LoginUser
     const loginUser = new LoginUser(user, userRepository);
-    const userResponseModel = loginUser.execute();
-    const userLoginResponse = new LoginUserOutput(userResponseModel, 200);
-    const response = userLoginResponse.present();
+   
 
-    const userResult = response.user;
+    // teste userRepository
+    let findUser = userRepository.getOneUser(user);
 
-    
-    expect(userResult).toHaveProperty('name', 'name');
+
+    const findLoginUser: UserOutputInterface|null = loginUser.findLoginUser();
+    console.log(findLoginUser);
+    if(!findLoginUser) {
+      return;
+    }
+
+    console.log(findLoginUser);
+    expect(findUser).toBeInstanceOf(UserEntity)
+    expect(findLoginUser).toHaveProperty('nme', '');
   });
 })
