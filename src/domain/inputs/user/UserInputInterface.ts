@@ -2,10 +2,10 @@
  * Modele userInput 
  */
 interface UserInputInterface {
-  email: string;
-  password?: string;
+  email: string;  
   name?: string;
-  
+  password?: string;
+  confirmPassword?: string
 }
 
 export { UserInputInterface };

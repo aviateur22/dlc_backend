@@ -1,3 +1,4 @@
+import { inherits } from "util";
 import { UserEntity } from "../../entities/UserEntity";
 import { UserInputInterface } from "../../inputs/user/UserInputInterface";
 
@@ -6,10 +7,23 @@ import { UserInputInterface } from "../../inputs/user/UserInputInterface";
  */
 interface UserRepositoryInterface {
   /**
-   * Récupération user
-   * @param {UserInputInterface} user 
+   * Initialisation
    */
-  getOneUser(user: UserInputInterface): UserEntity|undefined
+  init(): Promise<void>
+
+  /**
+   * Ajout d'un utilisateur
+   * @param {UserInputInterface} userInput
+   * @returns {UserEntity} 
+   */
+  addUser(userInput: UserInputInterface): Promise<UserEntity>
+  
+  /**
+   * Récupération user
+   * @param {UserInputInterface} userInput 
+   * @returns {UserEntity}
+   */
+  getOneUser(userInput: UserInputInterface): Promise<UserEntity|undefined>
 }
 
 export { UserRepositoryInterface }

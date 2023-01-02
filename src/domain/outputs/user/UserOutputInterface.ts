@@ -3,6 +3,6 @@
  */
 interface UserOutputInterface {
   email: string;  
-  name: string;
+  name?: string;
   userImageUrl: string;
 }
