@@ -1,59 +1,64 @@
-import { UserInputInterface } from "../ports/input/UserInputInterface";
-import { UserEntity } from "../entities/UserEntity";
 import { UserRepositoryInterface } from "../provider/respository/UserRepositoryInterface";
-import { UserMapper } from "../mappers/UserMapper";
 import { UserNotFindException } from "../exceptions/UserNotFindException";
 import { PasswordInvalidException } from "../exceptions/PasswordInvalidException";
 import { PasswordMissingException } from "../exceptions/PasswordMissingException";
+import { UserFactory } from "../factories/UserFactory";
 
 /**
  * Usecase Connexion client
  */
 class LoginUser {
-  protected userInputModel: UserInputInterface;
-  protected userEntity: UserEntity | undefined;
-  protected userRepository: UserRepositoryInterface;
-  protected passwordSecurity: PasswordSecurityInterface
-  protected userMapper: UserMapper;
+  /**
+   * Login user
+   */
+  protected user: UserLoginInterface;
 
+  /**
+   * Interface Repository
+   */
+  protected userRepository: UserRepositoryInterface;
+
+  /**
+   * Implémentation
+   */
+  protected passwordSecurity: PasswordSecurityInterface
+  
   constructor(
-    userInputModel: UserInputInterface,
+    user: UserLoginInterface,
     userRepository: UserRepositoryInterface,
-    passwordSecurity: PasswordSecurityInterface,
-    userMapper: UserMapper
+    passwordSecurity: PasswordSecurityInterface
     ) {
-    this.userInputModel = userInputModel;
+    this.user = user;
     this.userRepository = userRepository;
     this.passwordSecurity = passwordSecurity;
-    this.userMapper = userMapper;
   }
 
   /**
    * Exécution du useCase LoginUser
    * @returns {UserReponseModelInterface}
    */
-  async findLoginUser(): Promise<UserOutputInterface|null> {
+  async findLoginUser(): Promise<UserEntityInterface|null> {
 
     // Mot de passe manquant
-    if(!this.userInputModel.password) {
+    if(!this.user.password) {
       throw new PasswordMissingException('Le mot de passe n\'est est obligatoire');
     }
 
     // Récupération utilisateur en base de données
-    const findLoginUser = await this.userRepository.getOneUser(this.userInputModel);
+    const findLoginUser = await this.userRepository.getOneUser(this.user);
     
     if(!findLoginUser) {
       throw new UserNotFindException('Utilisateur inconnu');
     }
     
-    const isPasswordValid = await this.passwordSecurity.comparePassword(findLoginUser.password, this.userInputModel.password);
+    const isPasswordValid = await this.passwordSecurity.comparePassword(findLoginUser.password, this.user.password);
     
     if(!isPasswordValid) {
       throw new PasswordInvalidException('')
     }
 
     // Map le résultat 
-    return this.userMapper.userDto(findLoginUser);
+    return UserFactory.getUserEntity(findLoginUser.email, findLoginUser.name, findLoginUser.userImageUrl);
   }
 }
 

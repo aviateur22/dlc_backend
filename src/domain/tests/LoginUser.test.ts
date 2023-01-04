@@ -1,8 +1,9 @@
-import { UserMapper } from '../mappers/UserMapper';
 import { PasswordInvalidException } from '../exceptions/PasswordInvalidException';
 import { PasswordMissingException } from '../exceptions/PasswordMissingException';
 import { UserNotFindException } from '../exceptions/UserNotFindException';
-import { ApiFactory } from '../factories/ApiFactory';
+import { RepositoryFactory } from '../factories/RepositoryFactory';
+import { SecurityFactory } from '../factories/SecurityFactory';
+import { UserFactory } from '../factories/UserFactory';
 import { UserRepositoryInterface } from '../provider/respository/UserRepositoryInterface';
 import { LoginUser } from '../useCases/LoginUser';
 
@@ -16,17 +17,10 @@ let passwordSecurity: PasswordSecurityInterface;
  */
 let userRepository: UserRepositoryInterface;
 
-/**
- * Mapper pour renvoyer User
- */
-let userMapper: UserMapper;
-
 beforeEach(()=>{   
-  passwordSecurity = ApiFactory.getPasswordSecurity();
+  passwordSecurity = SecurityFactory.getPasswordSecurity();
 
-  userRepository = ApiFactory.getUserRepositoryModel(passwordSecurity);
-
-  userMapper = ApiFactory.getUserMapper();
+  userRepository = RepositoryFactory.getUserRepositoryModel(passwordSecurity);
 
   // Réinitialisation de la base de données
   userRepository.init()
@@ -41,13 +35,13 @@ describe('Usecase loginUser', function() {
       const password: string = 'affirmer2011';
 
       // User
-      const user = ApiFactory.getUserInputModel(email, undefined, password);
+      const user = UserFactory.getUserLogin(email, password);
 
       // UseCase LoginUser
-      const loginUser = new LoginUser(user, userRepository, passwordSecurity, userMapper); 
+      const loginUser = new LoginUser(user, userRepository, passwordSecurity); 
       
       // Recherche de l'utilisateur
-      const findLoginUser: UserOutputInterface|null = await loginUser.findLoginUser();
+      const findLoginUser: UserEntityInterface|null = await loginUser.findLoginUser();
     
       expect(findLoginUser).toHaveProperty('email', email);
     } catch (error) {
@@ -61,12 +55,14 @@ describe('Usecase loginUser', function() {
       const email: string = 'aviateur2@hotmail.fr';
       const password: string = 'affirmer2011';
   
-     // User
-     const user = ApiFactory.getUserInputModel(email, undefined, password);
+      // User
+      const user = UserFactory.getUserLogin(email, password);
 
       // UseCase LoginUser
-      const loginUser = new LoginUser(user, userRepository, passwordSecurity, userMapper);
-      const findLoginUser: UserOutputInterface|null = await loginUser.findLoginUser();
+      const loginUser = new LoginUser(user, userRepository, passwordSecurity); 
+      
+      // Recherche de l'utilisateur
+      const findLoginUser: UserEntityInterface|null = await loginUser.findLoginUser();
 
       expect(findLoginUser).toBeFalsy();
     } catch (error: any) {
@@ -81,14 +77,14 @@ describe('Usecase loginUser', function() {
       const email: string = 'aviateur22@hotmail.fr';
       const password: string = 'afirmer2011';
 
-      // User
-      const user = ApiFactory.getUserInputModel(email, undefined, password);
+       // User
+       const user = UserFactory.getUserLogin(email, password);
 
-      // UseCase LoginUser
-      const loginUser = new LoginUser(user, userRepository, passwordSecurity, userMapper);  
-
-      // Recherche de l'utilisateur
-      const findLoginUser: UserOutputInterface|null = await loginUser.findLoginUser();
+       // UseCase LoginUser
+       const loginUser = new LoginUser(user, userRepository, passwordSecurity); 
+       
+       // Recherche de l'utilisateur
+       const findLoginUser: UserEntityInterface|null = await loginUser.findLoginUser();
     
       expect(findLoginUser).toBeFalsy();
     } catch (error: any) {
@@ -103,13 +99,13 @@ describe('Usecase loginUser', function() {
       const password: string = '';
 
       // User
-      const user = ApiFactory.getUserInputModel(email, undefined, undefined);
+      const user = UserFactory.getUserLogin(email, password);
 
       // UseCase LoginUser
-      const loginUser = new LoginUser(user, userRepository, passwordSecurity, userMapper);  
-
+      const loginUser = new LoginUser(user, userRepository, passwordSecurity); 
+      
       // Recherche de l'utilisateur
-      const findLoginUser: UserOutputInterface|null = await loginUser.findLoginUser();
+      const findLoginUser: UserEntityInterface|null = await loginUser.findLoginUser();
     
       expect(findLoginUser).toBeFalsy();
     } catch (error: any) {

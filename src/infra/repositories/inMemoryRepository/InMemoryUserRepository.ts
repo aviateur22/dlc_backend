@@ -1,7 +1,6 @@
-import { UserEntity } from "../entities/UserEntity";
-import { PasswordMissingException } from "../exceptions/PasswordMissingException";
-import { UserInputInterface } from "../ports/input/UserInputInterface";
-import { UserRepositoryInterface } from "../provider/respository/UserRepositoryInterface";
+import {UserModel} from '../../../infra/repositories/models/UserModel'
+import {PasswordMissingException} from "../../../domain/exceptions/PasswordMissingException";
+import {UserRepositoryInterface} from "../../../domain/provider/respository/UserRepositoryInterface";
 
 class InMemoryUserRepository implements UserRepositoryInterface {
   /**
@@ -12,12 +11,12 @@ class InMemoryUserRepository implements UserRepositoryInterface {
   /**
    * Array<UserEntity>
    */
-  protected users: Array<UserEntity> = [];
+  protected users: Array<UserModel> = [];
 
   /**
    * User pour inserrer dans Array<UserEntity>
    */
-  protected user: UserEntity = {
+  protected user: UserModel = {
     name: 'cyrille',
     email: 'aviateur22@hotmail.fr',
     password: 'affirmer2011',
@@ -51,21 +50,21 @@ class InMemoryUserRepository implements UserRepositoryInterface {
    * @param {string} password 
    * @returns {UserOutputInterface}
    */
-  async addUser(userInput: UserInputInterface): Promise<UserEntity> {
+  async addUser(user: UserRegisterInterface): Promise<UserModel|null> {
     
-    if(!userInput.password) {
+    if(!user.password) {
       throw new PasswordMissingException('');
     }
 
-    const user: UserEntity = {
-      name: undefined,
-      email: userInput.email,
-      password: await this.passwordSecurity.setPasswordSecurity(userInput.password),
-      userImageUrl: 'wwww//default-adress'
+    const userModel: UserModel = {
+      name: '',
+      email: user.email,
+      password: await this.passwordSecurity.setPasswordSecurity(user.password),
+      userImageUrl: 'wwww//default-url'
     }
-    this.users.push(user);
+    this.users.push(userModel);
 
-    return user;
+    return userModel;
   }
 
   /**
@@ -73,14 +72,14 @@ class InMemoryUserRepository implements UserRepositoryInterface {
    * @param {UserInputInterface} userInput - Données utilisateur
    * @returns {UserEntity|undefined}
    */
-  async getOneUser(userInput: UserInputInterface): Promise<UserEntity|undefined> {
+  async getOneUser(userInput: UserBaseInterface): Promise<UserModel|null> {
     await this.init();
 
     // Recherche loginUser
-    const findUser: UserEntity|undefined = this.users.find(user => user.email === userInput.email);
+    const findUser: UserModel|undefined = this.users.find(user => user.email === userInput.email);
 
     if(!findUser) {
-      return undefined;
+      return null;
     }
 
     return findUser;

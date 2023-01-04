@@ -1,5 +1,4 @@
-import { UserEntity } from "../../entities/UserEntity";
-import { UserInputInterface } from "../../ports/input/UserInputInterface";
+import { UserModel } from "../../../infra/repositories/models/UserModel";
 
 /**
  * Interface UserRepository
@@ -12,17 +11,17 @@ interface UserRepositoryInterface {
 
   /**
    * Ajout d'un utilisateur
-   * @param {UserInputInterface} userInput
-   * @returns {UserEntity} 
+   * @param {UserBaseInterface} user
+   * @returns {UserModel|null} 
    */
-  addUser(userInput: UserInputInterface): Promise<UserEntity>
+  addUser(user: UserBaseInterface): Promise<UserModel|null>
   
   /**
    * Récupération user
-   * @param {UserInputInterface} userInput 
-   * @returns {UserEntity}
+   * @param {UserBaseInterface} user 
+   * @returns {UserModel|null}
    */
-  getOneUser(userInput: UserInputInterface): Promise<UserEntity|undefined>
+  getOneUser(user: UserBaseInterface): Promise<UserModel|null>
 }
 
 export { UserRepositoryInterface }

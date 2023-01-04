@@ -1,10 +1,10 @@
-class UserEntity {
-  name: string|undefined;
+class UserModel {
+  name: string;
   email: string;
   password: string;
   userImageUrl: string
 
-  constructor(email: string, password: string, userImageUrl: string, name?: string) {
+  constructor(email: string, password: string, userImageUrl: string, name: string) {
     this.name = name;
     this.email = email;
     this.password = password;
@@ -12,4 +12,4 @@ class UserEntity {
   }
 }
 
-export { UserEntity }
+export { UserModel }

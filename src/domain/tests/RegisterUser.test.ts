@@ -1,12 +1,12 @@
+import { UserEntity } from "../../infra/adapters/input/UserEntity";
 import { EmailFindException } from "../exceptions/EmailFindException";
 import { PasswordMissingException } from "../exceptions/PasswordMissingException";
 import { PasswordNotIdenticalException } from "../exceptions/PasswordNotIdenticalException";
-import { ApiFactory } from "../factories/ApiFactory";
-import { UserInputInterface } from "../ports/input/UserInputInterface";
-import { UserOutputModel } from "../../infra/adapters/input/UserOutputModel";
+import { RepositoryFactory } from "../factories/RepositoryFactory";
+import { SecurityFactory } from "../factories/SecurityFactory";
+import { UserFactory } from "../factories/UserFactory";
 import { UserRepositoryInterface } from "../provider/respository/UserRepositoryInterface";
 import { RegisterUser } from "../useCases/RegisterUser";
-import { UserMapper } from "../mappers/UserMapper";
 
 /**
  * Sécurité mot de passe
@@ -18,17 +18,10 @@ let passwordSecurity: PasswordSecurityInterface;
  */
 let userRepository: UserRepositoryInterface;
 
-/**
- * Mapper pour renvoyer User
- */
-let userMapper: UserMapper;
-
 beforeEach(()=>{   
-  passwordSecurity = ApiFactory.getPasswordSecurity();
+  passwordSecurity = SecurityFactory.getPasswordSecurity();
 
-  userRepository = ApiFactory.getUserRepositoryModel(passwordSecurity);
-
-  userMapper = ApiFactory.getUserMapper();
+  userRepository = RepositoryFactory.getUserRepositoryModel(passwordSecurity);
 
   // Réinitilaisation
   userRepository.init()
@@ -43,15 +36,16 @@ describe('Usecase registerUser', function() {
 
       try {
         // User
-        const user: UserInputInterface = ApiFactory.getUserInputModel(email, undefined, password, confirmPassword);
+        const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
 
         // UseCase registerUser
-        const registerUser = new RegisterUser(user, userRepository, passwordSecurity, userMapper);
+        const registerUser = new RegisterUser(user, userRepository, passwordSecurity);
 
-        const addUser: UserOutputInterface = await registerUser.register();
+        // Ajout utilisateur
+        const addUser: UserEntityInterface|null = await registerUser.register();
 
-        expect(addUser).toBeInstanceOf(UserOutputModel);
-        expect(addUser).toHaveProperty('name', undefined);        
+        expect(addUser).toBeInstanceOf(UserEntity);
+        expect(addUser).toHaveProperty('name', '');        
         expect(addUser).toHaveProperty('email', email);
 
       } catch (error) {
@@ -67,13 +61,13 @@ describe('Usecase registerUser', function() {
 
     try {
       // User
-      const user: UserInputInterface = ApiFactory.getUserInputModel(email, undefined, password, confirmPassword);
+      const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
 
       // UseCase registerUser
-      const registerUser = new RegisterUser(user, userRepository, passwordSecurity, userMapper);
+      const registerUser = new RegisterUser(user, userRepository, passwordSecurity);
 
-      // ajout utilisateur
-      const addUser: UserOutputInterface = await registerUser.register();
+      // Ajout utilisateur
+      const addUser: UserEntityInterface|null = await registerUser.register();
 
       expect(addUser).toBeFalsy();
     } catch (error) {
@@ -89,13 +83,13 @@ describe('Usecase registerUser', function() {
 
     try {
       // User
-      const user: UserInputInterface = ApiFactory.getUserInputModel(email, undefined, password, confirmPassword);
+      const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
 
       // UseCase registerUser
-      const registerUser = new RegisterUser(user, userRepository, passwordSecurity, userMapper);
+      const registerUser = new RegisterUser(user, userRepository, passwordSecurity);
 
-      // ajout utilisateur
-      const addUser: UserOutputInterface = await registerUser.register();
+      // Ajout utilisateur
+      const addUser: UserEntityInterface|null = await registerUser.register();
 
       expect(addUser).toBeFalsy();
     } catch (error) {
@@ -103,22 +97,46 @@ describe('Usecase registerUser', function() {
     }
   });
 
-  it('Should throw PasswordMissingexception because password is missing',async()=>{
+  it('Should throw PasswordMissingexception because 1 password is missing',async()=>{
     // Données utilisateur
     const email: string = 'aviateur22@hotmail.fr';
-    const password: string = 'affirmer2011';
+    const password: string = 'sssdf';
     const confirmPassword: string = '';
 
     try {
       // User
-      const user: UserInputInterface = ApiFactory.getUserInputModel(email, undefined, password, confirmPassword);
+      const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
 
       // UseCase registerUser
-      const registerUser = new RegisterUser(user, userRepository, passwordSecurity, userMapper);
+      const registerUser = new RegisterUser(user, userRepository, passwordSecurity);
 
-      // ajout utilisateur
-      const addUser: UserOutputInterface = await registerUser.register();
+      // Ajout utilisateur
+      const addUser: UserEntityInterface|null = await registerUser.register();
 
+      console.log(addUser);
+      expect(addUser).toBeFalsy();
+    } catch (error) {
+      expect(error).toBeInstanceOf(PasswordMissingException);
+    }
+  });
+
+  it('Should throw PasswordMissingexception because both password are missing',async()=>{
+    // Données utilisateur
+    const email: string = 'aviateur22@hotmail.fr';
+    const password: string = '';
+    const confirmPassword: string = '';
+
+    try {
+      // User
+      const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
+
+      // UseCase registerUser
+      const registerUser = new RegisterUser(user, userRepository, passwordSecurity);
+
+      // Ajout utilisateur
+      const addUser: UserEntityInterface|null = await registerUser.register();
+      
+      console.log(addUser);
       expect(addUser).toBeFalsy();
     } catch (error) {
       expect(error).toBeInstanceOf(PasswordMissingException);
