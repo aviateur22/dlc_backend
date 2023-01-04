@@ -1,7 +1,7 @@
 import { UserEntity } from "../entities/UserEntity";
-import { PasswordMissingException } from "../exception/PasswordMissingException";
-import { UserInputInterface } from "../inputs/user/UserInputInterface";
-import { UserRepositoryInterface } from "../provider/userRepository/UserRepositoryInterface";
+import { PasswordMissingException } from "../exceptions/PasswordMissingException";
+import { UserInputInterface } from "../ports/input/UserInputInterface";
+import { UserRepositoryInterface } from "../provider/respository/UserRepositoryInterface";
 
 class InMemoryUserRepository implements UserRepositoryInterface {
   /**

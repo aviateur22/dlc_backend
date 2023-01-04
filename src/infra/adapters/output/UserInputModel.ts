@@ -1,7 +1,8 @@
-import { UserInputInterface } from "./UserInputInterface";
+import { UserInputInterface } from "../../../domain/ports/input/UserInputInterface";
 
 /**
- * Modèle user Input
+ * Modèle User
+ * Allant de INFRA vers le DOMAIN
  */
 class UserInputModel implements UserInputInterface {
   email: string;

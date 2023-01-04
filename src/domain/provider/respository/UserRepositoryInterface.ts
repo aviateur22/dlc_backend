@@ -1,6 +1,5 @@
-import { inherits } from "util";
 import { UserEntity } from "../../entities/UserEntity";
-import { UserInputInterface } from "../../inputs/user/UserInputInterface";
+import { UserInputInterface } from "../../ports/input/UserInputInterface";
 
 /**
  * Interface UserRepository

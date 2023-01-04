@@ -1,11 +1,10 @@
-import { UserInputInterface } from "../inputs/user/UserInputInterface";
+import { UserInputInterface } from "../ports/input/UserInputInterface";
 import { UserEntity } from "../entities/UserEntity";
-import { UserRepositoryInterface } from "../provider/userRepository/UserRepositoryInterface";
-import { UserDto } from "../dto/UserDto";
-import { UserNotFindException } from "../exception/UserNotFindException";
-import { PasswordInvalidException } from "../exception/PasswordInvalidException";
-import { PasswordMissingException } from "../exception/PasswordMissingException";
-import { ApiFactory } from "../factories/ApiFactory";
+import { UserRepositoryInterface } from "../provider/respository/UserRepositoryInterface";
+import { UserMapper } from "../mappers/UserMapper";
+import { UserNotFindException } from "../exceptions/UserNotFindException";
+import { PasswordInvalidException } from "../exceptions/PasswordInvalidException";
+import { PasswordMissingException } from "../exceptions/PasswordMissingException";
 
 /**
  * Usecase Connexion client
@@ -15,18 +14,18 @@ class LoginUser {
   protected userEntity: UserEntity | undefined;
   protected userRepository: UserRepositoryInterface;
   protected passwordSecurity: PasswordSecurityInterface
-  protected userOutputModel: UserOutputInterface;
+  protected userMapper: UserMapper;
 
   constructor(
     userInputModel: UserInputInterface,
     userRepository: UserRepositoryInterface,
     passwordSecurity: PasswordSecurityInterface,
-    userOutputModel: UserOutputInterface
+    userMapper: UserMapper
     ) {
     this.userInputModel = userInputModel;
     this.userRepository = userRepository;
     this.passwordSecurity = passwordSecurity;
-    this.userOutputModel = userOutputModel;
+    this.userMapper = userMapper;
   }
 
   /**
@@ -54,7 +53,7 @@ class LoginUser {
     }
 
     // Map le résultat 
-    return new UserDto(findLoginUser, this.userOutputModel).userDto();
+    return this.userMapper.userDto(findLoginUser);
   }
 }
 

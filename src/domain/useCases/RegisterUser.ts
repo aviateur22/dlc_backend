@@ -1,9 +1,9 @@
-import { UserDto } from "../dto/UserDto";
-import { PasswordMissingException } from "../exception/PasswordMissingException";
-import { EmailFindException } from "../exception/EmailFindException";
-import { UserInputInterface } from "../inputs/user/UserInputInterface";
-import { UserRepositoryInterface } from "../provider/userRepository/UserRepositoryInterface";
-import { PasswordNotIdenticalException } from "../exception/PasswordNotIdenticalException";
+import { UserMapper } from "../mappers/UserMapper";
+import { PasswordMissingException } from "../exceptions/PasswordMissingException";
+import { EmailFindException } from "../exceptions/EmailFindException";
+import { UserInputInterface } from "../ports/input/UserInputInterface";
+import { UserRepositoryInterface } from "../provider/respository/UserRepositoryInterface";
+import { PasswordNotIdenticalException } from "../exceptions/PasswordNotIdenticalException";
 
 /**
  * Enregistrement utilisateur
@@ -12,18 +12,18 @@ class RegisterUser {
   user: UserInputInterface;
   userRepository: UserRepositoryInterface;
   passwordSecurity: PasswordSecurityInterface;
-  userOutput: UserOutputInterface;
+  userMapper: UserMapper
 
   constructor(
     user: UserInputInterface,
     userRepository: UserRepositoryInterface,
     passwordSecurity: PasswordSecurityInterface,
-    userOutput: UserOutputInterface
+    userMapper: UserMapper
     ) {
     this.user = user;
     this.userRepository = userRepository;
     this.passwordSecurity = passwordSecurity;
-    this.userOutput = userOutput
+    this.userMapper = userMapper
   }
 
   /**
@@ -45,7 +45,7 @@ class RegisterUser {
     const addUser = await this.userRepository.addUser(this.user);
 
     // Map le résultat 
-    return new UserDto(addUser, this.userOutput).userDto();
+    return this.userMapper.userDto(addUser);
   }
 }
 export {RegisterUser}

@@ -1,11 +1,12 @@
-import { EmailFindException } from "../exception/EmailFindException";
-import { PasswordMissingException } from "../exception/PasswordMissingException";
-import { PasswordNotIdenticalException } from "../exception/PasswordNotIdenticalException";
+import { EmailFindException } from "../exceptions/EmailFindException";
+import { PasswordMissingException } from "../exceptions/PasswordMissingException";
+import { PasswordNotIdenticalException } from "../exceptions/PasswordNotIdenticalException";
 import { ApiFactory } from "../factories/ApiFactory";
-import { UserInputInterface } from "../inputs/user/UserInputInterface";
-import { UserOutputModel } from "../outputs/user/UserOutputModel";
-import { UserRepositoryInterface } from "../provider/userRepository/UserRepositoryInterface";
+import { UserInputInterface } from "../ports/input/UserInputInterface";
+import { UserOutputModel } from "../../infra/adapters/input/UserOutputModel";
+import { UserRepositoryInterface } from "../provider/respository/UserRepositoryInterface";
 import { RegisterUser } from "../useCases/RegisterUser";
+import { UserMapper } from "../mappers/UserMapper";
 
 /**
  * Sécurité mot de passe
@@ -18,16 +19,16 @@ let passwordSecurity: PasswordSecurityInterface;
 let userRepository: UserRepositoryInterface;
 
 /**
- * model userOutput 
+ * Mapper pour renvoyer User
  */
-let userOutput: UserOutputInterface;
+let userMapper: UserMapper;
 
 beforeEach(()=>{   
   passwordSecurity = ApiFactory.getPasswordSecurity();
 
   userRepository = ApiFactory.getUserRepositoryModel(passwordSecurity);
 
-  userOutput = ApiFactory.getUserOutputModel();
+  userMapper = ApiFactory.getUserMapper();
 
   // Réinitilaisation
   userRepository.init()
@@ -45,7 +46,7 @@ describe('Usecase registerUser', function() {
         const user: UserInputInterface = ApiFactory.getUserInputModel(email, undefined, password, confirmPassword);
 
         // UseCase registerUser
-        const registerUser = new RegisterUser(user, userRepository, passwordSecurity, userOutput);
+        const registerUser = new RegisterUser(user, userRepository, passwordSecurity, userMapper);
 
         const addUser: UserOutputInterface = await registerUser.register();
 
@@ -69,7 +70,7 @@ describe('Usecase registerUser', function() {
       const user: UserInputInterface = ApiFactory.getUserInputModel(email, undefined, password, confirmPassword);
 
       // UseCase registerUser
-      const registerUser = new RegisterUser(user, userRepository, passwordSecurity, userOutput);
+      const registerUser = new RegisterUser(user, userRepository, passwordSecurity, userMapper);
 
       // ajout utilisateur
       const addUser: UserOutputInterface = await registerUser.register();
@@ -91,7 +92,7 @@ describe('Usecase registerUser', function() {
       const user: UserInputInterface = ApiFactory.getUserInputModel(email, undefined, password, confirmPassword);
 
       // UseCase registerUser
-      const registerUser = new RegisterUser(user, userRepository, passwordSecurity, userOutput);
+      const registerUser = new RegisterUser(user, userRepository, passwordSecurity, userMapper);
 
       // ajout utilisateur
       const addUser: UserOutputInterface = await registerUser.register();
@@ -113,7 +114,7 @@ describe('Usecase registerUser', function() {
       const user: UserInputInterface = ApiFactory.getUserInputModel(email, undefined, password, confirmPassword);
 
       // UseCase registerUser
-      const registerUser = new RegisterUser(user, userRepository, passwordSecurity, userOutput);
+      const registerUser = new RegisterUser(user, userRepository, passwordSecurity, userMapper);
 
       // ajout utilisateur
       const addUser: UserOutputInterface = await registerUser.register();
