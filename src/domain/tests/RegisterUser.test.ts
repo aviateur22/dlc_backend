@@ -1,11 +1,11 @@
-import { UserEntity } from "../../infra/adapters/input/UserEntity";
-import { EmailFindException } from "../exceptions/EmailFindException";
-import { PasswordMissingException } from "../exceptions/PasswordMissingException";
-import { PasswordNotIdenticalException } from "../exceptions/PasswordNotIdenticalException";
-import { RepositoryFactory } from "../factories/RepositoryFactory";
-import { SecurityFactory } from "../factories/SecurityFactory";
-import { UserFactory } from "../factories/UserFactory";
-import { UserRepositoryInterface } from "../provider/respository/UserRepositoryInterface";
+import { UserEntity } from "../../infra/adapters/user/UserEntity";
+import { EmailFindException } from "../../exceptions/EmailFindException";
+import { PasswordMissingException } from "../../exceptions/PasswordMissingException";
+import { PasswordNotIdenticalException } from "../../exceptions/PasswordNotIdenticalException";
+import { RepositoryFactory } from "../../factories/RepositoryFactory";
+import { SecurityFactory } from "../../factories/SecurityFactory";
+import { UserFactory } from "../../factories/UserFactory";
+import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInterface";
 import { RegisterUser } from "../useCases/RegisterUser";
 
 /**

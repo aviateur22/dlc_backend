@@ -1,8 +1,8 @@
-import { UserRepositoryInterface } from "../provider/respository/UserRepositoryInterface";
-import { UserNotFindException } from "../exceptions/UserNotFindException";
-import { PasswordInvalidException } from "../exceptions/PasswordInvalidException";
-import { PasswordMissingException } from "../exceptions/PasswordMissingException";
-import { UserFactory } from "../factories/UserFactory";
+import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInterface";
+import { UserNotFindException } from "../../exceptions/UserNotFindException";
+import { PasswordInvalidException } from "../../exceptions/PasswordInvalidException";
+import { PasswordMissingException } from "../../exceptions/PasswordMissingException";
+import { UserFactory } from "../../factories/UserFactory";
 
 /**
  * Usecase Connexion client
@@ -11,7 +11,7 @@ class LoginUser {
   /**
    * Login user
    */
-  protected user: UserLoginInterface;
+  protected user: UserInterface;
 
   /**
    * Interface Repository
@@ -24,7 +24,7 @@ class LoginUser {
   protected passwordSecurity: PasswordSecurityInterface
   
   constructor(
-    user: UserLoginInterface,
+    user: UserInterface,
     userRepository: UserRepositoryInterface,
     passwordSecurity: PasswordSecurityInterface
     ) {
@@ -37,7 +37,7 @@ class LoginUser {
    * Exécution du useCase LoginUser
    * @returns {UserReponseModelInterface}
    */
-  async findLoginUser(): Promise<UserEntityInterface|null> {
+  async findLoginUser(): Promise<UserEntity|null> {
 
     // Mot de passe manquant
     if(!this.user.password) {

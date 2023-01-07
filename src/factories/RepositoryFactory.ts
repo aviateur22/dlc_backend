@@ -1,5 +1,5 @@
-import { InMemoryUserRepository } from "../../infra/repositories/inMemoryRepository/InMemoryUserRepository";
-import { UserRepositoryInterface } from "../provider/respository/UserRepositoryInterface";
+import { InMemoryUserRepository } from "../infra/repositories/inMemoryRepository/InMemoryUserRepository";
+import { UserRepositoryInterface } from "../domain/ports/repository/UserRepositoryInterface";
 
 class RepositoryFactory {
   /**

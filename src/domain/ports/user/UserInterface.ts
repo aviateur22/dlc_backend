@@ -1,7 +1,7 @@
 /**
  * Interface UserLogin 
  */
-interface UserLoginInterface extends UserBaseInterface {
+interface UserInterface {
   email: string;
   password: string;
 }

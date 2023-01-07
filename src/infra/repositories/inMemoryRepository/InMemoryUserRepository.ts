@@ -1,6 +1,6 @@
 import {UserModel} from '../../../infra/repositories/models/UserModel'
-import {PasswordMissingException} from "../../../domain/exceptions/PasswordMissingException";
-import {UserRepositoryInterface} from "../../../domain/provider/respository/UserRepositoryInterface";
+import {PasswordMissingException} from "../../../exceptions/PasswordMissingException";
+import {UserRepositoryInterface} from "../../../domain/ports/repository/UserRepositoryInterface";
 
 class InMemoryUserRepository implements UserRepositoryInterface {
   /**
@@ -50,7 +50,7 @@ class InMemoryUserRepository implements UserRepositoryInterface {
    * @param {string} password 
    * @returns {UserOutputInterface}
    */
-  async addUser(user: UserRegisterInterface): Promise<UserModel|null> {
+  async registerUser(user: UserRegisterInterface): Promise<UserModelInterface|null> {
     
     if(!user.password) {
       throw new PasswordMissingException('');
@@ -72,7 +72,7 @@ class InMemoryUserRepository implements UserRepositoryInterface {
    * @param {UserInputInterface} userInput - Données utilisateur
    * @returns {UserEntity|undefined}
    */
-  async getOneUser(userInput: UserBaseInterface): Promise<UserModel|null> {
+  async getOneUser(userInput: UserInterface): Promise<UserModelInterface|null> {
     await this.init();
 
     // Recherche loginUser

@@ -1,4 +1,7 @@
-class UserModel {
+/**
+ * Implémentation du UserModelInterface
+ */
+class UserModel implements UserModelInterface {
   name: string;
   email: string;
   password: string;

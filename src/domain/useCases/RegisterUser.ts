@@ -1,8 +1,8 @@
-import { PasswordMissingException } from "../exceptions/PasswordMissingException";
-import { EmailFindException } from "../exceptions/EmailFindException";
-import { UserRepositoryInterface } from "../provider/respository/UserRepositoryInterface";
-import { PasswordNotIdenticalException } from "../exceptions/PasswordNotIdenticalException";
-import { UserFactory } from "../factories/UserFactory";
+import { PasswordMissingException } from "../../exceptions/PasswordMissingException";
+import { EmailFindException } from "../../exceptions/EmailFindException";
+import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInterface";
+import { PasswordNotIdenticalException } from "../../exceptions/PasswordNotIdenticalException";
+import { UserFactory } from "../../factories/UserFactory";
 
 /**
  * Enregistrement utilisateur
@@ -49,7 +49,7 @@ class RegisterUser {
       throw new EmailFindException('');
     }
 
-    const addUser = await this.userRepository.addUser(this.user);
+    const addUser = await this.userRepository.registerUser(this.user);
 
     if(!addUser){
       throw new Error('echec enregistrement');

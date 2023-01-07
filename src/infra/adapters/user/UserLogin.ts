@@ -2,7 +2,7 @@
  * Modèle UserLogin
  * Allant de INFRA vers le DOMAIN
  */
-class UserLogin implements UserLoginInterface {
+class UserLogin implements UserInterface {
   email: string;
   password: string;
 

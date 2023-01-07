@@ -1,6 +1,6 @@
-import { UserEntity } from "../../infra/adapters/input/UserEntity";
-import { UserLogin } from "../../infra/adapters/output/UserLogin";
-import { UserRegister } from "../../infra/adapters/output/UserRegister";
+import { UserEntity } from "../infra/adapters/user/UserEntity";
+import { UserLogin } from "../infra/adapters/user/UserLogin";
+import { UserRegister } from "../infra/adapters/user/UserRegister";
 
 /**
  * Chargement Modele User
@@ -21,9 +21,9 @@ class UserFactory {
    * Renvoie le modele UserLogin
    * @param {string} email 
    * @param {string} password 
-   * @returns {UserLoginInterface}
+   * @returns {UserInterface}
    */
-  static getUserLogin(email: string, password: string): UserLoginInterface {
+  static getUserLogin(email: string, password: string): UserInterface {
     return new UserLogin(email, password);
   }
   

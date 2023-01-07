@@ -14,14 +14,14 @@ interface UserRepositoryInterface {
    * @param {UserBaseInterface} user
    * @returns {UserModel|null} 
    */
-  addUser(user: UserBaseInterface): Promise<UserModel|null>
+  registerUser(user: UserRegisterInterface): Promise<UserModelInterface|null>
   
   /**
    * Récupération user
    * @param {UserBaseInterface} user 
    * @returns {UserModel|null}
    */
-  getOneUser(user: UserBaseInterface): Promise<UserModel|null>
+  getOneUser(user: UserInterface): Promise<UserModelInterface|null>
 }
 
 export { UserRepositoryInterface }

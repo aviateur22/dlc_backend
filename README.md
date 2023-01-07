@@ -1,5 +1,15 @@
 # dlc_backend
 
+## Mise en place de la clean architecture
+- Dossier Domain
+  - Contient la logique métier de l'application
+  - Les modèles métiers de l'application
+
+- Dossier Infra
+  - Contiendra l'implementation des absctractions
+  - Des framworks
+  - ...
+
 ## Vocabulaire
 
 - visitor: personne qui n'est pas authentifiée
