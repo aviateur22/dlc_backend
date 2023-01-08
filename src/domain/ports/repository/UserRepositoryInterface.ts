@@ -1,7 +1,7 @@
 /**
  * Interface UserRepository
  */
-interface UserRepositoryInterface {
+interface UserRepositoryInterface extends RepositoryBaseInterface {
   
   /**
    * Ajout d'un utilisateur

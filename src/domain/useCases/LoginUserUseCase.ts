@@ -3,6 +3,7 @@ import { UserNotFindException } from "../../exceptions/UserNotFindException";
 import { PasswordInvalidException } from "../../exceptions/PasswordInvalidException";
 import { PasswordMissingException } from "../../exceptions/PasswordMissingException";
 import { UserFactory } from "../../factories/UserFactory";
+import { Repository } from "../../helpers/repositories/Repository";
 
 /**
  * Usecase Connexion client
@@ -20,10 +21,10 @@ class LoginUserUseCase {
   protected passwordSecurity: PasswordSecurityInterface
   
   constructor(
-    userRepository: UserRepositoryInterface,
+    repositories: Repository,
     passwordSecurity: PasswordSecurityInterface
     ) {
-    this.userRepository = userRepository;
+    this.userRepository = repositories.userRepository;
     this.passwordSecurity = passwordSecurity;
   }
 

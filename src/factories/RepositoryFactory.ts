@@ -1,8 +1,11 @@
-import { InMemoryUserRepository } from "../infra/adapters/repositories/inMemoryRepository/InMemoryUserRepository";
+import { ProductRepositoryInterface } from "../domain/ports/repository/ProductRepositoryInterface";
 import { UserRepositoryInterface } from "../domain/ports/repository/UserRepositoryInterface";
 import { InMemoryProductRepository } from "../infra/adapters/repositories/inMemoryRepository/InMemoryProductRepository";
-import { ProductRepositoryInterface } from "../domain/ports/repository/ProductRepositoryInterface";
+import { InMemoryUserRepository } from "../infra/adapters/repositories/inMemoryRepository/InMemoryUserRepository";
 
+/**
+ * Factory pour les Repositories
+ */
 class RepositoryFactory {
   /**
    * Modele pour la base de données 
