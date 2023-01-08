@@ -7,12 +7,8 @@ import { UserFactory } from "../../factories/UserFactory";
 /**
  * Usecase Connexion client
  */
-class LoginUser {
-  /**
-   * Login user
-   */
-  protected user: UserInterface;
-
+class LoginUserUseCase {
+  
   /**
    * Interface Repository
    */
@@ -24,11 +20,9 @@ class LoginUser {
   protected passwordSecurity: PasswordSecurityInterface
   
   constructor(
-    user: UserInterface,
     userRepository: UserRepositoryInterface,
     passwordSecurity: PasswordSecurityInterface
     ) {
-    this.user = user;
     this.userRepository = userRepository;
     this.passwordSecurity = passwordSecurity;
   }
@@ -37,29 +31,29 @@ class LoginUser {
    * Exécution du useCase LoginUser
    * @returns {UserReponseModelInterface}
    */
-  async findLoginUser(): Promise<UserEntity|null> {
+  async execute(user: UserInterface): Promise<UserEntity|null> {
 
     // Mot de passe manquant
-    if(!this.user.password) {
-      throw new PasswordMissingException('Le mot de passe n\'est est obligatoire');
+    if(!user.password) {
+      throw new PasswordMissingException('Le mot de passe est obligatoire');
     }
 
     // Récupération utilisateur en base de données
-    const findLoginUser = await this.userRepository.getOneUser(this.user);
+    const findUser = await this.userRepository.findOne(user);
     
-    if(!findLoginUser) {
+    if(!findUser) {
       throw new UserNotFindException('Utilisateur inconnu');
     }
     
-    const isPasswordValid = await this.passwordSecurity.comparePassword(findLoginUser.password, this.user.password);
+    const isPasswordValid = await this.passwordSecurity.comparePassword(findUser.password, user.password);
     
     if(!isPasswordValid) {
       throw new PasswordInvalidException('')
     }
 
     // Map le résultat 
-    return UserFactory.getUserEntity(findLoginUser.email, findLoginUser.name, findLoginUser.userImageUrl);
+    return UserFactory.getUserEntity(findUser.email, findUser.name, findUser.userImageUrl);
   }
 }
 
-export { LoginUser }
+export { LoginUserUseCase }

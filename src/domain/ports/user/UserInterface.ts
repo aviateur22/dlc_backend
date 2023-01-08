@@ -1,5 +1,5 @@
 /**
- * Interface UserLogin 
+ * Interface récupération user
  */
 interface UserInterface {
   email: string;

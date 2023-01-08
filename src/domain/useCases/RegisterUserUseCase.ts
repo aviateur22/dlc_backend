@@ -7,7 +7,7 @@ import { UserFactory } from "../../factories/UserFactory";
 /**
  * Enregistrement utilisateur
  */
-class RegisterUser {
+class RegisterUserUseCase {
   /**
    * Implmentation UserRegister
    */
@@ -36,7 +36,7 @@ class RegisterUser {
   /**
    * Inscription nouveau client
    */
-  async register(): Promise<UserEntityInterface|null> {
+  async execute(): Promise<UserEntityInterface|null> {
     if(!this.user.password || !this.user.confirmPassword) {
       throw new PasswordMissingException('');
     }    
@@ -45,11 +45,11 @@ class RegisterUser {
       throw new PasswordNotIdenticalException('')
     }
 
-    if(await this.userRepository.getOneUser(this.user)){
+    if(await this.userRepository.findOne(this.user)){
       throw new EmailFindException('');
     }
 
-    const addUser = await this.userRepository.registerUser(this.user);
+    const addUser = await this.userRepository.save(this.user);
 
     if(!addUser){
       throw new Error('echec enregistrement');
@@ -59,4 +59,4 @@ class RegisterUser {
     return UserFactory.getUserEntity(addUser.email, addUser.name, addUser.userImageUrl);
   }
 }
-export {RegisterUser}
+export { RegisterUserUseCase }

@@ -1,6 +1,4 @@
-import { UserRepositoryInterface } from "../domain/ports/repository/UserRepositoryInterface";
-import { InMemoryUserRepository } from "../infra/repositories/inMemoryRepository/InMemoryUserRepository";
-import { bcryptPasswordSecurity } from "../infra/securities/PasswordSecurity";
+import { bcryptPasswordSecurity } from "../infra/adapters/securities/PasswordSecurity";
 
 /**
  * Chargement des modeles 
