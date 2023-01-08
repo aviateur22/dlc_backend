@@ -1,7 +1,7 @@
 /**
  * Interface UserRepository
  */
-interface UserRepositoryInterface extends RepositoryBaseInterface {
+interface UserRepositoryInterface {
   
   /**
    * Ajout d'un utilisateur
@@ -12,10 +12,10 @@ interface UserRepositoryInterface extends RepositoryBaseInterface {
   
   /**
    * Récupération user
-   * @param {UserBaseInterface} user 
+   * @param {string} email 
    * @returns {UserModel|null}
    */
-  findOne(user: UserInterface): Promise<UserModelInterface|null>;
+  findOne(email: string): Promise<UserModelInterface|null>;
 
   /**
    * Supprssion de tous les utilisateurs

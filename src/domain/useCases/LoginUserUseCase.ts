@@ -4,6 +4,7 @@ import { PasswordInvalidException } from "../../exceptions/PasswordInvalidExcept
 import { PasswordMissingException } from "../../exceptions/PasswordMissingException";
 import { UserFactory } from "../../factories/UserFactory";
 import { Repository } from "../../helpers/repositories/Repository";
+import { UserEntity } from "../entities/UserEntity";
 
 /**
  * Usecase Connexion client
@@ -40,7 +41,7 @@ class LoginUserUseCase {
     }
 
     // Récupération utilisateur en base de données
-    const findUser = await this.userRepository.findOne(user);
+    const findUser = await this.userRepository.findOne(user.email);
     
     if(!findUser) {
       throw new UserNotFindException('Utilisateur inconnu');
@@ -53,7 +54,7 @@ class LoginUserUseCase {
     }
 
     // Map le résultat 
-    return UserFactory.getUserEntity(findUser.email, findUser.name, findUser.userImageUrl);
+    return UserFactory.getUserEntity(findUser.id, findUser.email);
   }
 }
 

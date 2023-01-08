@@ -1,7 +1,7 @@
 /**
  * Interface ProductRepository
  */
-interface ProductRepositoryInterface extends RepositoryBaseInterface {
+interface ProductRepositoryInterface {
   
   /**
    * Ajout d'un produit
@@ -15,7 +15,12 @@ interface ProductRepositoryInterface extends RepositoryBaseInterface {
    * @param {ProductInterface} product - Produit recherché 
    * @returns {ProductEnityInterface|null}
    */
-  findOne(product: ProductInterface): Promise<ProductEnityInterface|null>;
+  findOne(product: ProductEnityInterface): Promise<ProductEnityInterface|null>;
+
+  /**
+   * Supprssion de tous les produits
+   */
+  deleteAll(): Promise<void>;
 
 }
 

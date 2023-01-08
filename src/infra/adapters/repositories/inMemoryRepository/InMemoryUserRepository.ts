@@ -28,6 +28,7 @@ class InMemoryUserRepository implements UserRepositoryInterface {
      * User pour inserrer dans Array<UserEntity>
      */
     const user: UserModel = {
+      id: 1,
       name: 'cyrille',
       email: 'aviateur22@hotmail.fr',
       password: 'affirmer2011',
@@ -54,11 +55,15 @@ class InMemoryUserRepository implements UserRepositoryInterface {
    */
   async save(user: UserRegisterInterface): Promise<UserModelInterface|null> {
 
+    // id
+    const id = this.users.length === 0 ? 1 : Math.max(...this.users.map(x=>x.id));
+
     if(!this.passwordSecurity) {
       throw new PasswordMissingException('');
     }
 
     const userModel: UserModel = {
+      id,
       name: '',
       email: user.email,
       password: await this.passwordSecurity.setPasswordSecurity(user.password),
@@ -71,12 +76,12 @@ class InMemoryUserRepository implements UserRepositoryInterface {
 
   /**
    * Recherche d'un User
-   * @param {UserInputInterface} userInput - Données utilisateur
+   * @param {string} email - Email utilisateur
    * @returns {UserEntity|null}
    */
-  async findOne(userInput: UserInterface): Promise<UserModelInterface|null> {
+  async findOne(email: string): Promise<UserModelInterface|null> {
     // Recherche loginUser
-    const findUser: UserModel|undefined = this.users.find(user => user.email === userInput.email);
+    const findUser: UserModel|undefined = this.users.find(user => user.email === email);
 
     if(!findUser) {
       return null;

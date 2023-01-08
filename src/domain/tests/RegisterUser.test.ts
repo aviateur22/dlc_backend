@@ -1,4 +1,3 @@
-import { UserEntity } from "../../infra/adapters/user/UserEntity";
 import { EmailFindException } from "../../exceptions/EmailFindException";
 import { PasswordMissingException } from "../../exceptions/PasswordMissingException";
 import { PasswordNotIdenticalException } from "../../exceptions/PasswordNotIdenticalException";
@@ -8,6 +7,7 @@ import { UserFactory } from "../../factories/UserFactory";
 import { RegisterUserUseCase } from "../useCases/RegisterUserUseCase";
 import { Repository } from "../../helpers/repositories/Repository";
 import { RepositoryEnum } from "../../helpers/repositories/RepositoryEnum";
+import { UserEntity } from "../entities/UserEntity";
 
 /**
  * Sécurité mot de passe
@@ -54,11 +54,7 @@ describe('Usecase registerUser', function() {
           throw new Error();
         }
 
-        expect(repositories.userRepository.findOne(
-          {
-            email: addUser.email
-          })
-        ).toBeTruthy();
+        expect(repositories.userRepository.findOne(addUser.email)).toBeTruthy();
 
       } catch (error) {
         expect(error).toBeFalsy();

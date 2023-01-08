@@ -2,13 +2,12 @@
  * Entité User
  */
 class UserEntity implements UserEntityInterface {
+  id: number;
   email: string;
-  name: string;
-  userImageUrl: string;
 
-  constructor(email: string, name: string, userImageUrl: string) {
+  constructor(id: number, email: string) {
+    this.id = id;
     this.email = email;
-    this.name = name;
-    this.userImageUrl = userImageUrl;
-  }
+  }  
 }
+export { UserEntity }

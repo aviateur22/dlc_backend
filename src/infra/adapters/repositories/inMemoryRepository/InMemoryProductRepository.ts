@@ -46,7 +46,7 @@ class InMemoryProductRepository implements ProductRepositoryInterface {
    * @param {ProductInterface} product - Produit recherché
    * @returns {ProductModelInterface|null}
    */
-  async findOne(product: ProductInterface): Promise<ProductModelInterface|null> {
+  async findOne(product: ProductEnityInterface): Promise<ProductModelInterface|null> {
     const findProducts: ProductModelInterface|undefined = this.products.find(x=>x.id === product.id);
 
     if(!findProducts) {
@@ -54,6 +54,13 @@ class InMemoryProductRepository implements ProductRepositoryInterface {
     }
     
     return findProducts;
+  }
+
+  /**
+   * Supprssion de tous les produits
+   */
+  async deleteAll(): Promise<void> {
+    this.products = [];
   }
 }
 export { InMemoryProductRepository }

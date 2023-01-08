@@ -9,8 +9,8 @@ class ProductFactory {
    * Renvoie le modèle ProductEntity 
    * @returns {ProductEnityInterface}
    */
-  static getProductEntity(id: number, productImageUrl: string, openDate: Date): ProductEnityInterface {
-    return new ProductEntity(id, productImageUrl, openDate);
+  static getProductEntity(id: number): ProductEnityInterface {
+    return new ProductEntity(id);
   }
 }
 

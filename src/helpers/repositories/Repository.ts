@@ -6,7 +6,14 @@ import { UserRepositoryInterface } from "../../domain/ports/repository/UserRepos
  */
 class Repository {
 
+  /**
+   * userRepository
+   */
   userRepository: UserRepositoryInterface;
+
+  /**
+   * productRepository
+   */
   productRepository: ProductRepositoryInterface;
   
   constructor(userRepository: UserRepositoryInterface, productRepository:ProductRepositoryInterface) 

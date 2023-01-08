@@ -41,7 +41,7 @@ class RegisterUserUseCase {
       throw new PasswordNotIdenticalException('')
     }
 
-    if(await this.userRepository.findOne(user)){
+    if(await this.userRepository.findOne(user.email)){
       throw new EmailFindException('');
     }
 
@@ -52,7 +52,7 @@ class RegisterUserUseCase {
     }
     
     // Map le résultat 
-    return UserFactory.getUserEntity(addUser.email, addUser.name, addUser.userImageUrl);
+    return UserFactory.getUserEntity(addUser.id, addUser.email);
   }
 }
 export { RegisterUserUseCase }

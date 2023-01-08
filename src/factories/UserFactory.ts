@@ -1,4 +1,4 @@
-import { UserEntity } from "../infra/adapters/user/UserEntity";
+import { UserEntity } from "../domain/entities/UserEntity";
 import { UserLogin } from "../infra/adapters/user/UserLogin";
 import { UserRegister } from "../infra/adapters/user/UserRegister";
 
@@ -31,8 +31,8 @@ class UserFactory {
    * Renvoie le modele UserEntity 
    * @returns {UserUserEntityInterface}
    */
-  static getUserEntity(email: string, name: string, userImageUrl: string): UserEntityInterface {
-    return new UserEntity(email, name, userImageUrl);
+  static getUserEntity(id: number, email: string): UserEntityInterface {
+    return new UserEntity(id, email);
   }
 
 }
