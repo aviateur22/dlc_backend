@@ -31,7 +31,7 @@ class LoginUserUseCase {
    * Exécution du useCase LoginUser
    * @returns {UserReponseModelInterface}
    */
-  async execute(user: UserInterface): Promise<UserEntity|null> {
+  async execute(user: UserConnectInterface): Promise<UserEntity|null> {
 
     // Mot de passe manquant
     if(!user.password) {

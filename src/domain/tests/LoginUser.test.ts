@@ -39,7 +39,7 @@ describe('Usecase loginUser', function() {
       const password: string = 'affirmer2011';
 
       // User
-      const user = UserFactory.getUserLogin(email, password);
+      const user: UserConnectInterface = UserFactory.getUserLogin(email, password);
 
       // UseCase LoginUser
       const loginUserUseCase = new LoginUserUseCase(userRepository, passwordSecurity); 

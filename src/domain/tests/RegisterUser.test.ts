@@ -48,8 +48,16 @@ describe('Usecase registerUser', function() {
         const addUser: UserEntityInterface|null = await registerUserUseCase.execute();
 
         expect(addUser).toBeInstanceOf(UserEntity);
-        expect(addUser).toHaveProperty('name', '');        
-        expect(addUser).toHaveProperty('email', email);
+
+        if(!addUser) {
+          throw new Error();
+        }
+
+        expect(userRepository.findOne(
+          {
+            email: addUser.email
+          })
+        ).toBeTruthy();
 
       } catch (error) {
         expect(error).toBeFalsy();

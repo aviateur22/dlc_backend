@@ -23,7 +23,7 @@ class UserFactory {
    * @param {string} password 
    * @returns {UserInterface}
    */
-  static getUserLogin(email: string, password: string): UserInterface {
+  static getUserLogin(email: string, password: string): UserConnectInterface {
     return new UserLogin(email, password);
   }
   
