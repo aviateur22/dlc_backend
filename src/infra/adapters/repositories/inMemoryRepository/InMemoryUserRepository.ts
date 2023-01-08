@@ -1,44 +1,47 @@
-import {UserModel} from '../../../infra/repositories/models/UserModel'
-import {PasswordMissingException} from "../../../exceptions/PasswordMissingException";
-import {UserRepositoryInterface} from "../../../domain/ports/repository/UserRepositoryInterface";
+import { UserModel} from '../models/UserModel'
+import { PasswordMissingException } from "../../../../exceptions/PasswordMissingException";
+import { UserRepositoryInterface } from "../../../../domain/ports/repository/UserRepositoryInterface";
 
 class InMemoryUserRepository implements UserRepositoryInterface {
   /**
    * PasswordSecurity
    */
-  protected passwordSecurity: PasswordSecurityInterface;
+  protected passwordSecurity?: PasswordSecurityInterface;
 
   /**
    * Array<UserEntity>
    */
   protected users: Array<UserModel> = [];
 
-  /**
-   * User pour inserrer dans Array<UserEntity>
-   */
-  protected user: UserModel = {
-    name: 'cyrille',
-    email: 'aviateur22@hotmail.fr',
-    password: 'affirmer2011',
-    userImageUrl: 'wwww'
+  constructor(passwordSecurity?: PasswordSecurityInterface) {
+    if(passwordSecurity) {
+      this.passwordSecurity = passwordSecurity;
+    }
   }
 
-  constructor(passwordSecurity: PasswordSecurityInterface) {
-    this.passwordSecurity = passwordSecurity;
-  }
-  
   /**
-   * Initialisation données
+   * 
+   * @returns {void}
    */
-  public async init(): Promise<void> {
-    // Réinitialise users
-    this.users = [];
-
-    let copyUser = {
-      ...this.user
+  private async addUserInArray():Promise<void> {
+    /**
+     * User pour inserrer dans Array<UserEntity>
+     */
+    const user: UserModel = {
+      name: 'cyrille',
+      email: 'aviateur22@hotmail.fr',
+      password: 'affirmer2011',
+      userImageUrl: 'wwww'
     }
 
-    copyUser.password = await this.passwordSecurity.setPasswordSecurity(this.user.password);  
+    let copyUser = {
+      ...user
+    }
+
+    if(!this.passwordSecurity) {
+      return;
+    }    
+    copyUser.password = await this.passwordSecurity.setPasswordSecurity(user.password);  
 
     // Mise dans tableau
     this.users.push(copyUser);
@@ -46,13 +49,12 @@ class InMemoryUserRepository implements UserRepositoryInterface {
 
   /**
    * Ajout d'un utilisateur
-   * @param {string} email 
-   * @param {string} password 
+   * @param {UserRegisterInterface} user - Utilisateur a enregistrer
    * @returns {UserOutputInterface}
    */
-  async registerUser(user: UserRegisterInterface): Promise<UserModelInterface|null> {
-    
-    if(!user.password) {
+  async save(user: UserRegisterInterface): Promise<UserModelInterface|null> {
+
+    if(!this.passwordSecurity) {
       throw new PasswordMissingException('');
     }
 
@@ -62,19 +64,17 @@ class InMemoryUserRepository implements UserRepositoryInterface {
       password: await this.passwordSecurity.setPasswordSecurity(user.password),
       userImageUrl: 'wwww//default-url'
     }
-    this.users.push(userModel);
 
+    this.users.push(userModel);
     return userModel;
   }
 
   /**
-   * 
+   * Recherche d'un User
    * @param {UserInputInterface} userInput - Données utilisateur
-   * @returns {UserEntity|undefined}
+   * @returns {UserEntity|null}
    */
-  async getOneUser(userInput: UserInterface): Promise<UserModelInterface|null> {
-    await this.init();
-
+  async findOne(userInput: UserInterface): Promise<UserModelInterface|null> {
     // Recherche loginUser
     const findUser: UserModel|undefined = this.users.find(user => user.email === userInput.email);
 
@@ -83,6 +83,13 @@ class InMemoryUserRepository implements UserRepositoryInterface {
     }
 
     return findUser;
+  }
+
+  /**
+   * Suppression de tous les utilisateurs
+   */
+  async deleteAll(): Promise<void> {
+    this.users = [];
   }
   
 }

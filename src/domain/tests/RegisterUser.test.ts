@@ -6,25 +6,28 @@ import { RepositoryFactory } from "../../factories/RepositoryFactory";
 import { SecurityFactory } from "../../factories/SecurityFactory";
 import { UserFactory } from "../../factories/UserFactory";
 import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInterface";
-import { RegisterUser } from "../useCases/RegisterUser";
+import { RegisterUserUseCase } from "../useCases/RegisterUserUseCase";
 
 /**
  * Sécurité mot de passe
  */
-let passwordSecurity: PasswordSecurityInterface;
+let passwordSecurity: PasswordSecurityInterface = SecurityFactory.getPasswordSecurity();
 
 /**
  * User repository
  */
-let userRepository: UserRepositoryInterface;
+let userRepository: UserRepositoryInterface = RepositoryFactory.getUserRepositoryModel(passwordSecurity);
 
-beforeEach(()=>{   
-  passwordSecurity = SecurityFactory.getPasswordSecurity();
+beforeEach(async()=>{   
+  // Vide le repository
+  await userRepository.deleteAll();
 
-  userRepository = RepositoryFactory.getUserRepositoryModel(passwordSecurity);
-
-  // Réinitilaisation
-  userRepository.init()
+  // Ajout d'un utilisateur
+  await userRepository.save({
+    email: 'aviateur22@hotmail.fr',
+    password: 'affirmer2011',
+    confirmPassword: 'affirmer2011'
+  });
 });
 
 describe('Usecase registerUser', function() {
@@ -39,10 +42,10 @@ describe('Usecase registerUser', function() {
         const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
 
         // UseCase registerUser
-        const registerUser = new RegisterUser(user, userRepository, passwordSecurity);
+        const registerUserUseCase = new RegisterUserUseCase(user, userRepository, passwordSecurity);
 
         // Ajout utilisateur
-        const addUser: UserEntityInterface|null = await registerUser.register();
+        const addUser: UserEntityInterface|null = await registerUserUseCase.execute();
 
         expect(addUser).toBeInstanceOf(UserEntity);
         expect(addUser).toHaveProperty('name', '');        
@@ -64,10 +67,10 @@ describe('Usecase registerUser', function() {
       const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
 
       // UseCase registerUser
-      const registerUser = new RegisterUser(user, userRepository, passwordSecurity);
+      const registerUserUseCase = new RegisterUserUseCase(user, userRepository, passwordSecurity);
 
       // Ajout utilisateur
-      const addUser: UserEntityInterface|null = await registerUser.register();
+      const addUser: UserEntityInterface|null = await registerUserUseCase.execute();
 
       expect(addUser).toBeFalsy();
     } catch (error) {
@@ -86,10 +89,10 @@ describe('Usecase registerUser', function() {
       const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
 
       // UseCase registerUser
-      const registerUser = new RegisterUser(user, userRepository, passwordSecurity);
+      const registerUserUseCase = new RegisterUserUseCase(user, userRepository, passwordSecurity);
 
       // Ajout utilisateur
-      const addUser: UserEntityInterface|null = await registerUser.register();
+      const addUser: UserEntityInterface|null = await registerUserUseCase.execute();
 
       expect(addUser).toBeFalsy();
     } catch (error) {
@@ -108,10 +111,10 @@ describe('Usecase registerUser', function() {
       const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
 
       // UseCase registerUser
-      const registerUser = new RegisterUser(user, userRepository, passwordSecurity);
+      const registerUserUseCase = new RegisterUserUseCase(user, userRepository, passwordSecurity);
 
       // Ajout utilisateur
-      const addUser: UserEntityInterface|null = await registerUser.register();
+      const addUser: UserEntityInterface|null = await registerUserUseCase.execute();
 
       console.log(addUser);
       expect(addUser).toBeFalsy();
@@ -131,10 +134,10 @@ describe('Usecase registerUser', function() {
       const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
 
       // UseCase registerUser
-      const registerUser = new RegisterUser(user, userRepository, passwordSecurity);
+      const registerUserUseCase = new RegisterUserUseCase(user, userRepository, passwordSecurity);
 
       // Ajout utilisateur
-      const addUser: UserEntityInterface|null = await registerUser.register();
+      const addUser: UserEntityInterface|null = await registerUserUseCase.execute();
       
       console.log(addUser);
       expect(addUser).toBeFalsy();

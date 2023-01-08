@@ -1,27 +1,26 @@
-import { UserModel } from "../../../infra/repositories/models/UserModel";
-
 /**
  * Interface UserRepository
  */
 interface UserRepositoryInterface {
-  /**
-   * Initialisation
-   */
-  init(): Promise<void>
-
+  
   /**
    * Ajout d'un utilisateur
    * @param {UserBaseInterface} user
    * @returns {UserModel|null} 
    */
-  registerUser(user: UserRegisterInterface): Promise<UserModelInterface|null>
+  save(user: UserRegisterInterface): Promise<UserModelInterface|null>;
   
   /**
    * Récupération user
    * @param {UserBaseInterface} user 
    * @returns {UserModel|null}
    */
-  getOneUser(user: UserInterface): Promise<UserModelInterface|null>
+  findOne(user: UserInterface): Promise<UserModelInterface|null>;
+
+  /**
+   * Supprssion de tous les utilisateurs
+   */
+  deleteAll(): Promise<void>;
 }
 
 export { UserRepositoryInterface }

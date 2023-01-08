@@ -1,3 +1,6 @@
+/**
+ * Entité User
+ */
 class UserEntity implements UserEntityInterface {
   email: string;
   name: string;
