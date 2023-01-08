@@ -124,7 +124,6 @@ describe('Usecase registerUser', function() {
       // Ajout utilisateur
       const addUser: UserEntityInterface|null = await registerUserUseCase.execute();
 
-      console.log(addUser);
       expect(addUser).toBeFalsy();
     } catch (error) {
       expect(error).toBeInstanceOf(PasswordMissingException);
@@ -147,7 +146,6 @@ describe('Usecase registerUser', function() {
       // Ajout utilisateur
       const addUser: UserEntityInterface|null = await registerUserUseCase.execute();
       
-      console.log(addUser);
       expect(addUser).toBeFalsy();
     } catch (error) {
       expect(error).toBeInstanceOf(PasswordMissingException);
