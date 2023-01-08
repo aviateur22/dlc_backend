@@ -1,6 +1,6 @@
-import {UserModel} from '../models/UserModel'
-import {PasswordMissingException} from "../../../../exceptions/PasswordMissingException";
-import {UserRepositoryInterface} from "../../../../domain/ports/repository/UserRepositoryInterface";
+import { UserModel} from '../models/UserModel'
+import { PasswordMissingException } from "../../../../exceptions/PasswordMissingException";
+import { UserRepositoryInterface } from "../../../../domain/ports/repository/UserRepositoryInterface";
 
 class InMemoryUserRepository implements UserRepositoryInterface {
   /**

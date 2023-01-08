@@ -21,7 +21,7 @@ class AddProductUseCase {
    * @param {ProductInterface} product 
    * @returns {ProductEnityInterface}
    */
-  async addProduct(product: ProductAddInterface): Promise<ProductEnityInterface> {
+  async execute(product: ProductAddInterface): Promise<ProductEnityInterface> {
     const saveProduct = await this.productRepository.save(product);
     return ProductFactory.getProductEntity(saveProduct.id, saveProduct.productImageUrl, saveProduct.openDate);
   }  

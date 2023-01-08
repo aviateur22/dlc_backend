@@ -3,11 +3,10 @@ import { ProductEntity } from "../entities/ProductEntity";
 import { ProductRepositoryInterface } from "../ports/repository/ProductRepositoryInterface";
 import { AddProductUseCase } from "../useCases/AddProductUseCase";
 
-let productRepository: ProductRepositoryInterface;
+let productRepository: ProductRepositoryInterface = RepositoryFactory.getProductRepositoryModel();
 
 describe('Usecase AddProduct', ()=>{
   beforeEach(()=>{
-    productRepository = RepositoryFactory.getProductRepositoryModel();
   }); 
   
   it('Should add product to user products', async()=>{
@@ -18,7 +17,7 @@ describe('Usecase AddProduct', ()=>{
     };
 
     const addProductUseCase = new AddProductUseCase(productRepository);
-    const addProduct: ProductEnityInterface = await addProductUseCase.addProduct(product);
+    const addProduct: ProductEnityInterface = await addProductUseCase.execute(product);
     
     expect(addProduct).toBeInstanceOf(ProductEntity);
     expect((await productRepository.findOne(addProduct))).toBeTruthy();    
