@@ -3,16 +3,12 @@ import { EmailFindException } from "../../exceptions/EmailFindException";
 import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInterface";
 import { PasswordNotIdenticalException } from "../../exceptions/PasswordNotIdenticalException";
 import { UserFactory } from "../../factories/UserFactory";
+import { Repository } from "../../helpers/repositories/Repository";
 
 /**
  * Enregistrement utilisateur
  */
-class RegisterUserUseCase {
-  /**
-   * Implmentation UserRegister
-   */
-  user: UserRegisterInterface;
-
+class RegisterUserUseCase {  
   /**
    * Implmentation Repository
    */
@@ -24,32 +20,32 @@ class RegisterUserUseCase {
   passwordSecurity: PasswordSecurityInterface;
 
   constructor(
-    user: UserRegisterInterface,
-    userRepository: UserRepositoryInterface,
+    repositories: Repository,
     passwordSecurity: PasswordSecurityInterface,
     ) {
-    this.user = user;
-    this.userRepository = userRepository;
+    this.userRepository = repositories.userRepository;
     this.passwordSecurity = passwordSecurity;
   }
 
   /**
    * Inscription nouveau client
+   * @param {UserRegisterInterface} user - Personne a inscrire
+   * @returns {UserEntityInterface} 
    */
-  async execute(): Promise<UserEntityInterface|null> {
-    if(!this.user.password || !this.user.confirmPassword) {
+  async execute(user: UserRegisterInterface): Promise<UserEntityInterface|null> {
+    if(!user.password || !user.confirmPassword) {
       throw new PasswordMissingException('');
     }    
 
-    if(this.user.password !== this.user.confirmPassword) {
+    if(user.password !== user.confirmPassword) {
       throw new PasswordNotIdenticalException('')
     }
 
-    if(await this.userRepository.findOne(this.user)){
+    if(await this.userRepository.findOne(user)){
       throw new EmailFindException('');
     }
 
-    const addUser = await this.userRepository.save(this.user);
+    const addUser = await this.userRepository.save(user);
 
     if(!addUser){
       throw new Error('echec enregistrement');

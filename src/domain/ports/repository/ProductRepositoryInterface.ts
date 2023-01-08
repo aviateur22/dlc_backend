@@ -1,7 +1,7 @@
 /**
  * Interface ProductRepository
  */
-interface ProductRepositoryInterface {
+interface ProductRepositoryInterface extends RepositoryBaseInterface {
   
   /**
    * Ajout d'un produit
