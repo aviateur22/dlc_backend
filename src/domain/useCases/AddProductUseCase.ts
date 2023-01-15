@@ -1,7 +1,9 @@
 import { UserNotFindException } from "../../exceptions/UserNotFindException";
-import { ProductFactory } from "../../factories/ProductFactory";
 import { Repository } from "../../helpers/repositories/Repository";
+import { ProductEntityMapper } from "../dtos/ProductEntityMapper";
+import { ProductEntity } from "../entities/ProductEntity";
 import { ProductRepositoryInterface } from "../ports/repository/ProductRepositoryInterface";
+import { UserProductRepositoryInterface } from "../ports/repository/UserProductRepositoryInterface";
 import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInterface";
 
 /**
@@ -12,34 +14,48 @@ class AddProductUseCase {
   /**
    * Repository USer
    */
-  protected userRepository: UserRepositoryInterface;
+  protected readonly userRepository: UserRepositoryInterface;
 
   /**
    * Repository Product
    */
-  protected productRepository: ProductRepositoryInterface;
+  protected readonly productRepository: ProductRepositoryInterface;
+
+  /**
+   * UserProduct Repository
+   */
+  protected readonly userProductRepository: UserProductRepositoryInterface;
 
   constructor(repositories: Repository) {
     this.userRepository = repositories.userRepository;
     this.productRepository = repositories.productRepository;
+    this.userProductRepository = repositories.userProductRepository;
 
   }
 
   /**
    * Ajout d'un produit
    * @param {ProductInterface} product 
-   * @returns {ProductEnityInterface}
+   * @returns {ProductEntity}
    */
-  async execute(product: ProductAddInterface, user: UserEntityInterface): Promise<ProductEnityInterface> {
+  async execute(product: ProductAddInterface, userId: number): Promise<ProductEntity> {
 
-    const findUser = await  this.userRepository.findOne(user.email);
+    const findUser = await  this.userRepository.findOne(userId);
 
     if(!findUser) {
-      throw new UserNotFindException('');
+      throw new UserNotFindException();
     }
 
+    // Ajout du produit 
     const saveProduct = await this.productRepository.save(product);
-    return ProductFactory.getProductEntity(saveProduct.id);
+
+    // Ajout du userProduct
+    const saveUserProduct = await this.userProductRepository.save({
+      userId: userId,
+      productId: saveProduct.id
+    })
+
+    return ProductEntityMapper.productEntity(saveProduct);
   }  
 }
 export {AddProductUseCase};

@@ -7,6 +7,7 @@ import { UserFactory } from '../../factories/UserFactory';
 import { LoginUserUseCase } from '../useCases/LoginUserUseCase';
 import { Repository } from '../../helpers/repositories/Repository';
 import { RepositoryEnum } from '../../helpers/repositories/RepositoryEnum';
+import { UserEntity } from '../entities/UserEntity';
 
 /**
  * Sécurité mot de passe
@@ -46,7 +47,7 @@ describe('Usecase loginUser', function() {
       const loginUserUseCase = new LoginUserUseCase(repositories, passwordSecurity); 
       
       // Recherche de l'utilisateur
-      const loginUser: UserEntityInterface|null = await loginUserUseCase.execute(user);
+      const loginUser: UserEntity|null = await loginUserUseCase.execute(user);
     
       expect(loginUser).toHaveProperty('email', email);
     } catch (error) {
@@ -67,7 +68,7 @@ describe('Usecase loginUser', function() {
       const loginUserUseCase = new LoginUserUseCase(repositories, passwordSecurity); 
       
       // Recherche de l'utilisateur
-      const loginUser: UserEntityInterface|null = await loginUserUseCase.execute(user);
+      const loginUser: UserEntity|null = await loginUserUseCase.execute(user);
 
       expect(loginUser).toBeFalsy();
     } catch (error: any) {
@@ -89,7 +90,7 @@ describe('Usecase loginUser', function() {
        const loginUserUseCase = new LoginUserUseCase(repositories, passwordSecurity); 
        
        // Recherche de l'utilisateur
-       const loginUSer: UserEntityInterface|null = await loginUserUseCase.execute(user);
+       const loginUSer: UserEntity|null = await loginUserUseCase.execute(user);
     
       expect(loginUSer).toBeFalsy();
     } catch (error: any) {
@@ -110,7 +111,7 @@ describe('Usecase loginUser', function() {
       const loginUserUseCase = new LoginUserUseCase(repositories, passwordSecurity); 
       
       // Recherche de l'utilisateur
-      const loginUser: UserEntityInterface|null = await loginUserUseCase.execute(user);
+      const loginUser: UserEntity|null = await loginUserUseCase.execute(user);
     
       expect(loginUser).toBeFalsy();
     } catch (error: any) {

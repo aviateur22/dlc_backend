@@ -1,8 +1,10 @@
 import { UserNotFindException } from "../../exceptions/UserNotFindException";
+import { UserProductNotMatchException } from "../../exceptions/UserProductNotMatchException";
 import { SecurityFactory } from "../../factories/SecurityFactory";
 import { Repository } from "../../helpers/repositories/Repository";
 import { RepositoryActivate } from "../../helpers/repositories/RepositoryActivate";
 import { RepositoryEnum } from "../../helpers/repositories/RepositoryEnum";
+import { UserProductModel } from "../../infra/adapters/repositories/models/UserProductModel";
 import { ProductEntity } from "../entities/ProductEntity";
 import { AddProductUseCase } from "../useCases/AddProductUseCase";
 
@@ -30,6 +32,9 @@ describe('Usecase AddProduct', ()=>{
       password: 'affirmer2011',
       confirmPassword: 'affirmer2011'
     });
+
+    // Vide la liste userProduct
+    await repositories.userProductRepository.deleteAll();
   }); 
   
   it('Should add product to user products list', async()=>{
@@ -45,22 +50,26 @@ describe('Usecase AddProduct', ()=>{
       /**
        * Utilisateur
        */
-      const user: UserEntityInterface = {
-        id: 1,
-        email: 'aviateur22@hotmail.fr',
-      }
+      const userId: number = 1;
 
       const addProductUseCase = new AddProductUseCase(repositories);
-      const addProduct: ProductEnityInterface = await addProductUseCase.execute(product, user);
+      const addProduct: ProductEntity = await addProductUseCase.execute(product, userId);
       
+      // Recherche du userProduct
+      const userProduct: UserProductModel|null = await repositories.userProductRepository.findOne(userId, addProduct.id);
+      
+      if(!userProduct) {
+        throw new UserProductNotMatchException();
+      }
+
       expect(addProduct).toBeInstanceOf(ProductEntity);
-      expect((await repositories.productRepository.findOne(addProduct))).toBeTruthy();
+      expect(userProduct).toBeTruthy();
+      expect(userProduct.productId).toBe(addProduct.id);
+      expect((await repositories.productRepository.findOne(addProduct.id))).toBeTruthy();
     }
     catch(error) {
       expect(error).toBeFalsy();
     }
-
-    
   });
 
   it('should throw UserNotFindException because user is not find', async()=>{
@@ -76,18 +85,15 @@ describe('Usecase AddProduct', ()=>{
       /**
        * Utilisateur
        */
-      const user: UserEntityInterface = {
-        id: 2,
-        email: 'aviateur20@hotmail.fr',
-      }
+      const userId: number =  2;
 
       const addProductUseCase = new AddProductUseCase(repositories);
-      const addProduct: ProductEnityInterface = await addProductUseCase.execute(product, user);
+      const addProduct: ProductEntity = await addProductUseCase.execute(product, userId);
       
       expect(addProduct).toBeFalsy();
-      expect((await repositories.productRepository.findOne(addProduct))).toBeFalsy();
+      expect((await repositories.productRepository.findOne(addProduct.id))).toBeFalsy();
     } catch (error) {
       expect(error).toBeInstanceOf(UserNotFindException);
     }
-  });
+  }); 
 });

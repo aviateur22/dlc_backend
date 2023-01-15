@@ -32,7 +32,9 @@ class InMemoryUserRepository implements UserRepositoryInterface {
       name: 'cyrille',
       email: 'aviateur22@hotmail.fr',
       password: 'affirmer2011',
-      userImageUrl: 'wwww'
+      userImageUrl: 'wwww',
+      createdAt: new Date('2023-01-20'),
+      updatedAt: new Date('2023-01-20')
     }
 
     let copyUser = {
@@ -53,10 +55,10 @@ class InMemoryUserRepository implements UserRepositoryInterface {
    * @param {UserRegisterInterface} user - Utilisateur a enregistrer
    * @returns {UserOutputInterface}
    */
-  async save(user: UserRegisterInterface): Promise<UserModelInterface|null> {
+  async save(user: UserRegisterInterface): Promise<UserModel|null> {
 
     // id
-    const id = this.users.length === 0 ? 1 : Math.max(...this.users.map(x=>x.id));
+    const id = this.users.length === 0 ? 1 : Math.max(...this.users.map(x=>x.id)) + 1;
 
     if(!this.passwordSecurity) {
       throw new PasswordMissingException('');
@@ -67,7 +69,9 @@ class InMemoryUserRepository implements UserRepositoryInterface {
       name: '',
       email: user.email,
       password: await this.passwordSecurity.setPasswordSecurity(user.password),
-      userImageUrl: 'wwww//default-url'
+      userImageUrl: 'wwww//default-url',
+      createdAt: new Date('2023-01-20'),
+      updatedAt: new Date('2023-01-20')
     }
 
     this.users.push(userModel);
@@ -79,7 +83,7 @@ class InMemoryUserRepository implements UserRepositoryInterface {
    * @param {string} email - Email utilisateur
    * @returns {UserEntity|null}
    */
-  async findOne(email: string): Promise<UserModelInterface|null> {
+  async findOneByEmail(email: string): Promise<UserModel|null> {
     // Recherche loginUser
     const findUser: UserModel|undefined = this.users.find(user => user.email === email);
 
@@ -89,6 +93,22 @@ class InMemoryUserRepository implements UserRepositoryInterface {
 
     return findUser;
   }
+
+  /**
+   * Recherche d'un User
+   * @param {number} userId - Id utilisateur
+   * @returns {UserEntity|null}
+   */
+    async findOne(userId: number): Promise<UserModel|null> {
+      // Recherche loginUser
+      const findUser: UserModel|undefined = this.users.find(user => user.id === userId);
+  
+      if(!findUser) {
+        return null;
+      }
+  
+      return findUser;
+    }
 
   /**
    * Suppression de tous les utilisateurs

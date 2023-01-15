@@ -1,3 +1,4 @@
+import { ProductEntity } from "../../../../domain/entities/ProductEntity";
 import { ProductRepositoryInterface } from "../../../../domain/ports/repository/ProductRepositoryInterface";
 import { ProductModel } from "../models/ProductModel";
 
@@ -27,7 +28,7 @@ class InMemoryProductRepository implements ProductRepositoryInterface {
     const createdDate: Date = new Date('2023-01-08 13:25:00');
 
     // id
-    const id = this.products.length === 0 ? 1 : Math.max(...this.products.map(x=>x.id));
+    const id = this.products.length === 0 ? 1 : Math.max(...this.products.map(x=>x.id)) + 1;
 
     const productModel = {
       id,
@@ -43,17 +44,34 @@ class InMemoryProductRepository implements ProductRepositoryInterface {
 
   /**
    * Recherche d'un produit
-   * @param {ProductInterface} product - Produit recherché
-   * @returns {ProductModelInterface|null}
+   * @param {number} productId - ProduitId recherché
+   * @returns {ProductModel|null}
    */
-  async findOne(product: ProductEnityInterface): Promise<ProductModelInterface|null> {
-    const findProducts: ProductModelInterface|undefined = this.products.find(x=>x.id === product.id);
+  async findOne(productId: number): Promise<ProductModel|null> {
+    const findProducts: ProductModel|undefined = this.products.find(x=>x.id === productId);
 
     if(!findProducts) {
       return null;
     }
     
     return findProducts;
+  }
+
+  /**
+   * Mise à jour d'un produit
+   * @param { productUpdateInterface } product 
+   */
+  async updateOne(product: productUpdateInterface): Promise<ProductModel> {
+    const findProduct =await this.findOne(product.id);
+
+    if(!findProduct) {
+      throw new Error('');
+    }
+    findProduct.openDate = product.openDate;
+    findProduct.productImageUrl = product.productImageUrl;
+    findProduct.updatedDate = new Date();
+
+    return findProduct;
   }
 
   /**
