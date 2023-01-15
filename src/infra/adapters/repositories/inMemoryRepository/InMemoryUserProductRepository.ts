@@ -14,7 +14,7 @@ class InMemoryUserProductRepository implements UserProductRepositoryInterface {
    */
   async save(userProduct: UserProductAddInterface): Promise<UserProductModel|null> {   
     // Recherche id 
-    const id = this.userProducts.length === 0 ? 1 : Math.max(...this.userProducts.map(x=>x.id));
+    const id = this.userProducts.length === 0 ? 1 : Math.max(...this.userProducts.map(x=>x.id)) + 1;
 
     // Ajout element
     const addUserProduct: UserProductModel = new UserProductModel(
@@ -45,8 +45,8 @@ class InMemoryUserProductRepository implements UserProductRepositoryInterface {
     return findUserProduct;
   }
 
-  deleteAll(): void {
-    throw new Error("Method not implemented.");
+  async deleteAll(): Promise<void> {
+    this.userProducts = []
   }
 }
 

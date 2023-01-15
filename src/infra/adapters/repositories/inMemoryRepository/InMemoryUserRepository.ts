@@ -58,7 +58,7 @@ class InMemoryUserRepository implements UserRepositoryInterface {
   async save(user: UserRegisterInterface): Promise<UserModel|null> {
 
     // id
-    const id = this.users.length === 0 ? 1 : Math.max(...this.users.map(x=>x.id));
+    const id = this.users.length === 0 ? 1 : Math.max(...this.users.map(x=>x.id)) + 1;
 
     if(!this.passwordSecurity) {
       throw new PasswordMissingException('');

@@ -1,4 +1,5 @@
 import { ProductNotFindException } from "../../exceptions/ProductNotFindException";
+import { UserNotFindException } from "../../exceptions/UserNotFindException";
 import { UserProductNotMatchException } from "../../exceptions/UserProductNotMatchException";
 import { Repository } from "../../helpers/repositories/Repository";
 import { UserProductModel } from "../../infra/adapters/repositories/models/UserProductModel";
@@ -35,6 +36,10 @@ class UpdateProductUseCase {
 
     // Vérification que le produit appartient au user
     const findUser = await this.userRepository.findOne(userId);
+
+    if(!findUser) {
+      throw new UserNotFindException();
+    }
 
     // Recherche du produit
     const findProduct = await this.productRepository.findOne(product.id);

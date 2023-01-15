@@ -1,3 +1,5 @@
+import { UserProductModel } from "../../../infra/adapters/repositories/models/UserProductModel";
+
 /**
  * Repository UserProduct
  */
@@ -20,7 +22,7 @@ interface UserProductRepositoryInterface {
   /**
    * Supprime tout
    */
-  deleteAll(): void
+  deleteAll(): Promise<void>
     
  
 }

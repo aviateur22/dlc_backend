@@ -28,7 +28,7 @@ class InMemoryProductRepository implements ProductRepositoryInterface {
     const createdDate: Date = new Date('2023-01-08 13:25:00');
 
     // id
-    const id = this.products.length === 0 ? 1 : Math.max(...this.products.map(x=>x.id));
+    const id = this.products.length === 0 ? 1 : Math.max(...this.products.map(x=>x.id)) + 1;
 
     const productModel = {
       id,
