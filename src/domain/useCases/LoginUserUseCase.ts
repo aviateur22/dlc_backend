@@ -2,9 +2,9 @@ import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInter
 import { UserNotFindException } from "../../exceptions/UserNotFindException";
 import { PasswordInvalidException } from "../../exceptions/PasswordInvalidException";
 import { PasswordMissingException } from "../../exceptions/PasswordMissingException";
-import { UserFactory } from "../../factories/UserFactory";
 import { Repository } from "../../helpers/repositories/Repository";
 import { UserEntity } from "../entities/UserEntity";
+import { UserEntityMapper } from "../dtos/UserEntityMapper";
 
 /**
  * Usecase Connexion client
@@ -41,7 +41,7 @@ class LoginUserUseCase {
     }
 
     // Récupération utilisateur en base de données
-    const findUser = await this.userRepository.findOne(user.email);
+    const findUser = await this.userRepository.findOneByEmail(user.email);
     
     if(!findUser) {
       throw new UserNotFindException('Utilisateur inconnu');
@@ -52,9 +52,8 @@ class LoginUserUseCase {
     if(!isPasswordValid) {
       throw new PasswordInvalidException('')
     }
-
-    // Map le résultat 
-    return UserFactory.getUserEntity(findUser.id, findUser.email);
+    
+    return UserEntityMapper.userEntity(findUser);
   }
 }
 

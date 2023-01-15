@@ -2,8 +2,9 @@ import { PasswordMissingException } from "../../exceptions/PasswordMissingExcept
 import { EmailFindException } from "../../exceptions/EmailFindException";
 import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInterface";
 import { PasswordNotIdenticalException } from "../../exceptions/PasswordNotIdenticalException";
-import { UserFactory } from "../../factories/UserFactory";
 import { Repository } from "../../helpers/repositories/Repository";
+import { UserEntity } from "../entities/UserEntity";
+import { UserEntityMapper } from "../dtos/UserEntityMapper";
 
 /**
  * Enregistrement utilisateur
@@ -32,7 +33,7 @@ class RegisterUserUseCase {
    * @param {UserRegisterInterface} user - Personne a inscrire
    * @returns {UserEntityInterface} 
    */
-  async execute(user: UserRegisterInterface): Promise<UserEntityInterface|null> {
+  async execute(user: UserRegisterInterface): Promise<UserEntity|null> {
     if(!user.password || !user.confirmPassword) {
       throw new PasswordMissingException('');
     }    
@@ -41,7 +42,7 @@ class RegisterUserUseCase {
       throw new PasswordNotIdenticalException('')
     }
 
-    if(await this.userRepository.findOne(user.email)){
+    if(await this.userRepository.findOneByEmail(user.email)){
       throw new EmailFindException('');
     }
 
@@ -50,9 +51,8 @@ class RegisterUserUseCase {
     if(!addUser){
       throw new Error('echec enregistrement');
     }
-    
-    // Map le résultat 
-    return UserFactory.getUserEntity(addUser.id, addUser.email);
+        
+    return UserEntityMapper.userEntity(addUser);
   }
 }
 export { RegisterUserUseCase }

@@ -1,3 +1,5 @@
+import { UserModel } from "../../../infra/adapters/repositories/models/UserModel";
+
 /**
  * Interface UserRepository
  */
@@ -8,14 +10,20 @@ interface UserRepositoryInterface {
    * @param {UserBaseInterface} user
    * @returns {UserModel|null} 
    */
-  save(user: UserRegisterInterface): Promise<UserModelInterface|null>;
+  save(user: UserRegisterInterface): Promise<UserModel|null>;
   
   /**
    * Récupération user
-   * @param {string} email 
+   * @param {number} id 
    * @returns {UserModel|null}
    */
-  findOne(email: string): Promise<UserModelInterface|null>;
+  findOne(id: number): Promise<UserModel|null>;
+
+  /**
+   * Récupéaration user par son email
+   * @param email
+   */
+  findOneByEmail(email: string): Promise<UserModel|null>;
 
   /**
    * Supprssion de tous les utilisateurs

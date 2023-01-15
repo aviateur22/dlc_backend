@@ -26,15 +26,6 @@ class UserFactory {
   static getUserLogin(email: string, password: string): UserConnectInterface {
     return new UserLogin(email, password);
   }
-  
-  /**
-   * Renvoie le modele UserEntity 
-   * @returns {UserUserEntityInterface}
-   */
-  static getUserEntity(id: number, email: string): UserEntityInterface {
-    return new UserEntity(id, email);
-  }
-
 }
 
 export { UserFactory }

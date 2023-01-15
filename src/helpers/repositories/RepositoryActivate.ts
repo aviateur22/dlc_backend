@@ -3,6 +3,7 @@ import { ProductRepositoryInterface } from "../../domain/ports/repository/Produc
 import { RepositoryEnum } from "./RepositoryEnum";
 import { Repository } from "./Repository";
 import { RepositoryFactory } from "../../factories/RepositoryFactory";
+import { UserProductRepositoryInterface } from "../../domain/ports/repository/UserProductRepositoryInterface";
 
 
 /**
@@ -22,23 +23,38 @@ class RepositoryActivate {
     // ProductRepository
     let productRepository:ProductRepositoryInterface;
 
+    // UserProductRepository
+    let userProductRepository: UserProductRepositoryInterface
+
     switch (repositorySelection) {
 
       /**
        * InMemoryRepository
        */
       case RepositoryEnum.inMemory:
-        userRepository = RepositoryFactory.getUserRepositoryModel(passwordSecurity);
-        productRepository = RepositoryFactory.getProductRepositoryModel();
+        // User Repository
+        userRepository = RepositoryFactory.getInMemoryUserRepository(passwordSecurity);
         
-        return new Repository(userRepository, productRepository);
+        // Product Repository
+        productRepository = RepositoryFactory.getInMemoryProductRepository();
+        
+        // UserProduct Repository
+        userProductRepository = RepositoryFactory.getInMemoryUserProductRepository();
+        
+        return new Repository(userRepository, productRepository, userProductRepository);
         break;
     
       default:
-        userRepository = RepositoryFactory.getUserRepositoryModel(passwordSecurity);
-        productRepository = RepositoryFactory.getProductRepositoryModel();
+         // User Repository
+         userRepository = RepositoryFactory.getInMemoryUserRepository(passwordSecurity);
         
-        return new Repository(userRepository, productRepository);
+         // Product Repository
+         productRepository = RepositoryFactory.getInMemoryProductRepository();
+         
+         // UserProduct Repository
+         userProductRepository = RepositoryFactory.getInMemoryUserProductRepository();
+        
+        return new Repository(userRepository, productRepository, userProductRepository);
         break;
     }
   }

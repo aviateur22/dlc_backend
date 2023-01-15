@@ -1,7 +1,7 @@
 /**
  * Model Product
  */
-class ProductModel implements ProductModelInterface {
+class ProductModel {
   id: number;
   openDate: Date;
   productImageUrl: string;

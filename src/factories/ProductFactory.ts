@@ -5,13 +5,13 @@ import { ProductEntity } from "../domain/entities/ProductEntity";
  */
 class ProductFactory {
   
-  /**
-   * Renvoie le modèle ProductEntity 
-   * @returns {ProductEnityInterface}
-   */
-  static getProductEntity(id: number): ProductEnityInterface {
-    return new ProductEntity(id);
-  }
+  // /**
+  //  * Renvoie le modèle ProductEntity 
+  //  * @returns {ProductEnityInterface}
+  //  */
+  // static getProductEntity(id: number, imagePathUrl: string): ProductEntity {
+  //   return new ProductEntity(id, imagePathUrl);
+  // }
 }
 
 export { ProductFactory }

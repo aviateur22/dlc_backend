@@ -46,7 +46,7 @@ describe('Usecase registerUser', function() {
         const registerUserUseCase = new RegisterUserUseCase(repositories, passwordSecurity);
 
         // Ajout utilisateur
-        const addUser: UserEntityInterface|null = await registerUserUseCase.execute(user);
+        const addUser: UserEntity|null = await registerUserUseCase.execute(user);
 
         expect(addUser).toBeInstanceOf(UserEntity);
 
@@ -54,7 +54,7 @@ describe('Usecase registerUser', function() {
           throw new Error();
         }
 
-        expect(repositories.userRepository.findOne(addUser.email)).toBeTruthy();
+        expect(repositories.userRepository.findOneByEmail(addUser.email)).toBeTruthy();
 
       } catch (error) {
         expect(error).toBeFalsy();
@@ -75,7 +75,7 @@ describe('Usecase registerUser', function() {
       const registerUserUseCase = new RegisterUserUseCase(repositories, passwordSecurity);
 
       // Ajout utilisateur
-      const addUser: UserEntityInterface|null = await registerUserUseCase.execute(user);
+      const addUser: UserEntity|null = await registerUserUseCase.execute(user);
 
       expect(addUser).toBeFalsy();
     } catch (error) {
@@ -97,7 +97,7 @@ describe('Usecase registerUser', function() {
       const registerUserUseCase = new RegisterUserUseCase(repositories, passwordSecurity);
 
       // Ajout utilisateur
-      const addUser: UserEntityInterface|null = await registerUserUseCase.execute(user);
+      const addUser: UserEntity|null = await registerUserUseCase.execute(user);
 
       expect(addUser).toBeFalsy();
     } catch (error) {
@@ -119,7 +119,7 @@ describe('Usecase registerUser', function() {
       const registerUserUseCase = new RegisterUserUseCase(repositories, passwordSecurity);
 
       // Ajout utilisateur
-      const addUser: UserEntityInterface|null = await registerUserUseCase.execute(user);
+      const addUser: UserEntity|null = await registerUserUseCase.execute(user);
 
       expect(addUser).toBeFalsy();
     } catch (error) {
@@ -141,7 +141,7 @@ describe('Usecase registerUser', function() {
       const registerUserUseCase = new RegisterUserUseCase(repositories, passwordSecurity);
 
       // Ajout utilisateur
-      const addUser: UserEntityInterface|null = await registerUserUseCase.execute(user);
+      const addUser: UserEntity|null = await registerUserUseCase.execute(user);
       
       expect(addUser).toBeFalsy();
     } catch (error) {
