@@ -23,6 +23,13 @@ interface UserProductRepositoryInterface {
    * Supprime tout
    */
   deleteAll(): Promise<void>
+
+  /**
+   * Suppression de 1 userProduct
+   * @param userId 
+   * @param productId 
+   */
+  deleteOne(userId: number, productId: number): Promise<void>
     
  
 }

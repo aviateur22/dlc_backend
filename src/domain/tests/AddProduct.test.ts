@@ -26,6 +26,9 @@ describe('Usecase AddProduct', ()=>{
     // Vide la liste de produit
     await repositories.productRepository.deleteAll();
 
+    // Vide la liste userProduct
+    await repositories.userProductRepository.deleteAll();
+
     // Ajout d'un utilisateur
     await repositories.userRepository.save({
       email: 'aviateur22@hotmail.fr',
@@ -33,8 +36,7 @@ describe('Usecase AddProduct', ()=>{
       confirmPassword: 'affirmer2011'
     });
 
-    // Vide la liste userProduct
-    await repositories.userProductRepository.deleteAll();
+    
   }); 
   
   it('Should add product to user products list', async()=>{
