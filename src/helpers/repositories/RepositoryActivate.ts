@@ -4,6 +4,7 @@ import { RepositoryEnum } from "./RepositoryEnum";
 import { Repository } from "./Repository";
 import { RepositoryFactory } from "../../factories/RepositoryFactory";
 import { UserProductRepositoryInterface } from "../../domain/ports/repository/UserProductRepositoryInterface";
+import { FriendUserRepositoryInterface } from "../../domain/ports/repository/FriendUserRepositoryInterface";
 
 
 /**
@@ -24,7 +25,10 @@ class RepositoryActivate {
     let productRepository:ProductRepositoryInterface;
 
     // UserProductRepository
-    let userProductRepository: UserProductRepositoryInterface
+    let userProductRepository: UserProductRepositoryInterface;
+
+    // FriendUserRepository
+    let friendUserRepository: FriendUserRepositoryInterface;
 
     switch (repositorySelection) {
 
@@ -40,8 +44,11 @@ class RepositoryActivate {
         
         // UserProduct Repository
         userProductRepository = RepositoryFactory.getInMemoryUserProductRepository();
+
+        // FriendUser Repository
+        friendUserRepository = RepositoryFactory.getInMemoryFriendUserRepository();
         
-        return new Repository(userRepository, productRepository, userProductRepository);
+        return new Repository(userRepository, productRepository, userProductRepository, friendUserRepository);
         break;
     
       default:
@@ -53,8 +60,11 @@ class RepositoryActivate {
          
          // UserProduct Repository
          userProductRepository = RepositoryFactory.getInMemoryUserProductRepository();
+
+         // FriendUser Repository
+        friendUserRepository = RepositoryFactory.getInMemoryFriendUserRepository();
         
-        return new Repository(userRepository, productRepository, userProductRepository);
+        return new Repository(userRepository, productRepository, userProductRepository, friendUserRepository);
         break;
     }
   }

@@ -34,10 +34,13 @@
 | utilisateur | pouvoir me déconnecter |ne plus être authentifié |
 | utilisateur | pouvoir ajouter un produit | ajouter un produits à ma liste |
 | utilisateur | pouvoir supprimer un produit | supprimer un produits de ma liste |
-| utilisateur | pouvoir ajouter un ami | ajouter un utilisteur pouvant suivre ou modifier ma liste de produit |
+| utilisateur | pouvoir ajouter un ami | partager mes produits avec un autre utilisateur |
 | utilisateur | pouvoir supprimer un ami | supprimer l'accés à un utilisateur à ma liste de produit |
 | utilisateur | pouvoir voir les détails d'un ami | voir le profil de l'utilisateur |
 | utilisateur | pouvoir récupérer tous mes amis | voir la liste de tous mes amis |
 | utilisateur | modifier mon mot de passe | mettre a jour mon mot de passe |
 | utilisateur | modifier mon image de profile | mettre a jour mon image |
+| ami | pouvoir modifier les produits de mon ami| mettre a jour un produit |
+| ami | pouvoir supprimer les produits de mon ami| supprimer un produit |
+
 

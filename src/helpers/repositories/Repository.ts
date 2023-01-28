@@ -20,16 +20,23 @@ class Repository {
   /**
    * UserProduct Repository
    */
-  readonly userProductRepository: UserProductRepositoryInterface
+  readonly userProductRepository: UserProductRepositoryInterface;
+
+  /**
+   * FriendUser Repository
+   */
+  readonly friendUserRepository: FriendUserRepositoryInterface;
   
   constructor(
     userRepository: UserRepositoryInterface, 
     productRepository:ProductRepositoryInterface,
-    userProductRepository: UserProductRepositoryInterface
+    userProductRepository: UserProductRepositoryInterface,
+    friendUserRepository: FriendUserRepositoryInterface
   ) {
     this.userRepository = userRepository;
     this.productRepository = productRepository;
-    this.userProductRepository = userProductRepository;   
+    this.userProductRepository = userProductRepository;
+    this.friendUserRepository = friendUserRepository;   
   }
 }
 export { Repository }
