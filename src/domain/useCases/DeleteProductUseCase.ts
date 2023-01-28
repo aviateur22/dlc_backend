@@ -42,7 +42,7 @@ class DeleteProductUseCase {
    */
   async execute(product: productDeleteInterface, userId: number): Promise<void> {
     
-    // Vérification que le produit appartient au user
+    // Vérification que l'utilisateur est trouvé
     const findUser = await this.userRepository.findOne(userId);
 
     if(!findUser) {
@@ -53,20 +53,19 @@ class DeleteProductUseCase {
     const findProduct = await this.productRepository.findOne(product.id);
 
     if(!findProduct) {
-      throw new ProductNotFindException();
+      throw new ProductNotFindException('');
     }
-
+    
     // Recherche rattachement User - Product
     const findUserProduct: UserProductModel|null = await this.userProductRepository.findOne(userId, product.id);
 
-    if(!findUserProduct) {
-      throw new UserProductNotMatchException();
+    if(!findUserProduct) {       
+      throw new UserProductNotMatchException('');
     }
     
     // Suppression du produit
     await this.productRepository.deleteOne(product.id);
     await this.userProductRepository.deleteOne(userId, product.id);
-    
   }
 }
 

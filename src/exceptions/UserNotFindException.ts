@@ -7,4 +7,4 @@ class UserNotFindException extends Error {
     this.message = 'L\'utilisateur n\'est pas trouvé en base de données';    
   }
 }
-export {UserNotFindException}
+export { UserNotFindException }
