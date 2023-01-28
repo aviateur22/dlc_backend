@@ -80,5 +80,13 @@ class InMemoryProductRepository implements ProductRepositoryInterface {
   async deleteAll(): Promise<void> {
     this.products = [];
   }
+
+  /**
+   * Suppression de 1 produit
+   * @param id 
+   */
+  async deleteOne(id: number): Promise<void> {
+  this.products = this.products.filter(product=>product.id !== id);
+  }
 }
 export { InMemoryProductRepository }

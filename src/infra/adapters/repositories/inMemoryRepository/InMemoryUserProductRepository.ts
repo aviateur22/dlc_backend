@@ -45,8 +45,20 @@ class InMemoryUserProductRepository implements UserProductRepositoryInterface {
     return findUserProduct;
   }
 
+  /**
+   * Suppression de tous les userProduct
+   */
   async deleteAll(): Promise<void> {
     this.userProducts = []
+  }
+
+  /**
+   * Suppression de 1 userProduct
+   * @param userId 
+   * @param productId 
+   */
+  async deleteOne(userId: number, productId: number): Promise<void> {
+    this.userProducts = this.userProducts.filter(userProduct=>userProduct.id !== productId && userProduct.userId !== userId);
   }
 }
 

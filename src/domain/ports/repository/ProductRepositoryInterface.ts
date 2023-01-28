@@ -29,6 +29,11 @@ interface ProductRepositoryInterface {
    */
   deleteAll(): Promise<void>;
 
+  /**
+   * Suppression d'un produit
+   */
+  deleteOne(id: number): Promise<void>;
+
 }
 
 export { ProductRepositoryInterface }

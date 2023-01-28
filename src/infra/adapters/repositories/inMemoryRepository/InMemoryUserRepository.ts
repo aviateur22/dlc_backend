@@ -99,16 +99,16 @@ class InMemoryUserRepository implements UserRepositoryInterface {
    * @param {number} userId - Id utilisateur
    * @returns {UserEntity|null}
    */
-    async findOne(userId: number): Promise<UserModel|null> {
-      // Recherche loginUser
-      const findUser: UserModel|undefined = this.users.find(user => user.id === userId);
-  
-      if(!findUser) {
-        return null;
-      }
-  
-      return findUser;
+  async findOne(userId: number): Promise<UserModel|null> {
+    // Recherche loginUser
+    const findUser: UserModel|undefined = this.users.find(user => user.id === userId);
+
+    if(!findUser) {
+      return null;
     }
+
+    return findUser;
+  }
 
   /**
    * Suppression de tous les utilisateurs
