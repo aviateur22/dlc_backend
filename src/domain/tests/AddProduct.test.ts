@@ -1,22 +1,15 @@
 import { UserNotFindException } from "../../exceptions/UserNotFindException";
 import { UserProductNotMatchException } from "../../exceptions/UserProductNotMatchException";
-import { SecurityFactory } from "../../factories/SecurityFactory";
-import { Repository } from "../../helpers/repositories/Repository";
-import { RepositoryActivate } from "../../helpers/repositories/RepositoryActivate";
-import { RepositoryEnum } from "../../helpers/repositories/RepositoryEnum";
+import { RepositoryModel } from "../../helpers/repositories/RepositoryModel";
 import { UserProductModel } from "../../infra/adapters/repositories/models/UserProductModel";
+import { Repository } from "../../services/instanciateService/Repository";
 import { ProductEntity } from "../entities/ProductEntity";
 import { AddProductUseCase } from "../useCases/AddProductUseCase";
 
 /**
- * Sécurité mot de passe
- */
-const passwordSecurity: PasswordSecurityInterface = SecurityFactory.getPasswordSecurity();
-
-/**
  * Recupération des repositories
  */
-const repositories: Repository = RepositoryActivate.getRepository(RepositoryEnum.inMemory, passwordSecurity);
+const repositories: RepositoryModel =  Repository.getRepositories();
 
 describe('Usecase AddProduct', ()=>{
   beforeEach(async()=>{
@@ -54,7 +47,7 @@ describe('Usecase AddProduct', ()=>{
        */
       const userId: number = 1;
 
-      const addProductUseCase = new AddProductUseCase(repositories);
+      const addProductUseCase = new AddProductUseCase();
       const addProduct: ProductEntity = await addProductUseCase.execute(product, userId);
       
       // Recherche du userProduct
@@ -89,7 +82,7 @@ describe('Usecase AddProduct', ()=>{
        */
       const userId: number =  2;
 
-      const addProductUseCase = new AddProductUseCase(repositories);
+      const addProductUseCase = new AddProductUseCase();
       const addProduct: ProductEntity = await addProductUseCase.execute(product, userId);
       
       expect(addProduct).toBeFalsy();

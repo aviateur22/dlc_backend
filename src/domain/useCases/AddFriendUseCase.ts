@@ -1,27 +1,16 @@
 import { FriendAlreadyExistException } from "../../exceptions/FriendAlreadyExistException";
-import { Repository } from "../../helpers/repositories/Repository";
 import { FriendUserModel } from "../../infra/adapters/repositories/models/FriendUserModel";
+import { Repository } from "../../services/instanciateService/Repository";
 import { FriendUserMapper } from "../dtos/FriendUserMapper";
 import { FriendUserEntity } from "../entities/FriendUserEntity";
-import { FriendUserRepositoryInterface } from "../ports/repository/FriendUserRepositoryInterface";
-import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInterface";
 
 class AddFriendUseCase {
-  /**
-   * Repository User
-   */
-  protected userRepository: UserRepositoryInterface;
 
   /**
-   * Repository FriendUser
+   * userProductRepository
    */
-  protected friendUserRepository: FriendUserRepositoryInterface;
-
-  constructor(repositories: Repository) {
-    this.userRepository = repositories.userRepository;
-    this.friendUserRepository = repositories.friendUserRepository;    
-  }
-
+  private friendUserRepository = Repository.getRepositories().friendUserRepository;
+   
   /**
    * Ajout ami
    */
@@ -41,6 +30,8 @@ class AddFriendUseCase {
 
     // Ajout de la nouvelle relation
     const addFriend: FriendUserModel = await this.friendUserRepository.save(addFriendUser);
+    
+    
     return FriendUserMapper.FriendUserEntity(addFriend);
   }
 }

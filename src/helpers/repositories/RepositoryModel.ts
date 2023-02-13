@@ -1,3 +1,4 @@
+import { FriendUserRepositoryInterface } from "../../domain/ports/repository/FriendUserRepositoryInterface";
 import { ProductRepositoryInterface } from "../../domain/ports/repository/ProductRepositoryInterface";
 import { UserProductRepositoryInterface } from "../../domain/ports/repository/UserProductRepositoryInterface";
 import { UserRepositoryInterface } from "../../domain/ports/repository/UserRepositoryInterface";
@@ -5,7 +6,7 @@ import { UserRepositoryInterface } from "../../domain/ports/repository/UserRepos
 /**
  * Repository 
  */
-class Repository {
+class RepositoryModel {
 
   /**
    * userRepository
@@ -39,4 +40,4 @@ class Repository {
     this.friendUserRepository = friendUserRepository;   
   }
 }
-export { Repository }
+export { RepositoryModel }

@@ -1,36 +1,28 @@
 import { ProductNotFindException } from "../../exceptions/ProductNotFindException";
 import { UserNotFindException } from "../../exceptions/UserNotFindException";
 import { UserProductNotMatchException } from "../../exceptions/UserProductNotMatchException";
-import { Repository } from "../../helpers/repositories/Repository";
 import { UserProductModel } from "../../infra/adapters/repositories/models/UserProductModel";
+import { Repository } from "../../services/instanciateService/Repository";
 import { ProductEntityMapper } from "../dtos/ProductEntityMapper";
 import { ProductEntity } from "../entities/ProductEntity";
-import { ProductRepositoryInterface } from "../ports/repository/ProductRepositoryInterface";
-import { UserProductRepositoryInterface } from "../ports/repository/UserProductRepositoryInterface";
-import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInterface";
+
 
 class UpdateProductUseCase {
 
   /**
-   * User Repository
+   * userRepository
    */
-  protected userRepository: UserRepositoryInterface;
+    private userRepository = Repository.getRepositories().userRepository;
 
-  /**
-   * Product Repository
-   */
-  protected productRepository: ProductRepositoryInterface;
-
-  /**
-   * UserProduct repository
-   */
-  protected userProductRepository: UserProductRepositoryInterface;
-
-  constructor(repositories: Repository) {
-    this.productRepository = repositories.productRepository;
-    this.userRepository = repositories.userRepository;
-    this.userProductRepository = repositories.userProductRepository;
-  }
+    /**
+     * productRepository
+     */
+    private productRepository = Repository.getRepositories().productRepository;
+  
+    /**
+     * userProductRepository
+     */
+    private userProductRepository = Repository.getRepositories().userProductRepository;
 
   async execute(product: productUpdateInterface, userId: number): Promise<ProductEntity> {
 

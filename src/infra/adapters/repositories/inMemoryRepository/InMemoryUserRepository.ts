@@ -1,23 +1,18 @@
 import { UserModel} from '../models/UserModel'
 import { PasswordMissingException } from "../../../../exceptions/PasswordMissingException";
 import { UserRepositoryInterface } from "../../../../domain/ports/repository/UserRepositoryInterface";
+import { PasswordSecurityService } from '../../../../services/instanciateService/PasswordSecurity';
 
 class InMemoryUserRepository implements UserRepositoryInterface {
   /**
    * PasswordSecurity
    */
-  protected passwordSecurity?: PasswordSecurityInterface;
+  protected passwordSecurity?: PasswordSecurityInterface = PasswordSecurityService.getPasswordSecurity();
 
   /**
    * Array<UserEntity>
    */
   protected users: Array<UserModel> = [];
-
-  constructor(passwordSecurity?: PasswordSecurityInterface) {
-    if(passwordSecurity) {
-      this.passwordSecurity = passwordSecurity;
-    }
-  }
 
   /**
    * 

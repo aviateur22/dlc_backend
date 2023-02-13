@@ -1,33 +1,36 @@
-import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInterface";
+
 import { UserNotFindException } from "../../exceptions/UserNotFindException";
 import { PasswordInvalidException } from "../../exceptions/PasswordInvalidException";
 import { PasswordMissingException } from "../../exceptions/PasswordMissingException";
-import { Repository } from "../../helpers/repositories/Repository";
 import { UserEntity } from "../entities/UserEntity";
 import { UserEntityMapper } from "../dtos/UserEntityMapper";
+import { Repository } from "../../services/instanciateService/Repository";
+import { PasswordSecurityService } from "../../services/instanciateService/PasswordSecurity";
 
 /**
  * Usecase Connexion client
  */
 class LoginUserUseCase {
-  
-  /**
-   * Interface Repository
-   */
-  protected userRepository: UserRepositoryInterface;
 
   /**
-   * Implémentation
+   * userRepository
    */
-  protected passwordSecurity: PasswordSecurityInterface
+    private userRepository = Repository.getRepositories().userRepository;
+
+    /**
+     * 
+     */
+    private passwordSecurity = PasswordSecurityService.getPasswordSecurity();
+
+    /**
+     * productRepository
+     */
+    private productRepository = Repository.getRepositories().productRepository;
   
-  constructor(
-    repositories: Repository,
-    passwordSecurity: PasswordSecurityInterface
-    ) {
-    this.userRepository = repositories.userRepository;
-    this.passwordSecurity = passwordSecurity;
-  }
+    /**
+     * userProductRepository
+     */
+    private userProductRepository = Repository.getRepositories().userProductRepository;
 
   /**
    * Exécution du useCase LoginUser

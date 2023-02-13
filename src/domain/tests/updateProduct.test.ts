@@ -1,22 +1,22 @@
 import { ProductNotFindException } from "../../exceptions/ProductNotFindException";
 import { UserNotFindException } from "../../exceptions/UserNotFindException";
 import { UserProductNotMatchException } from "../../exceptions/UserProductNotMatchException";
-import { SecurityFactory } from "../../factories/SecurityFactory";
-import { Repository } from "../../helpers/repositories/Repository";
-import { RepositoryActivate } from "../../helpers/repositories/RepositoryActivate";
 import { RepositoryEnum } from "../../helpers/repositories/RepositoryEnum";
+import { RepositoryModel } from "../../helpers/repositories/RepositoryModel";
+import { PasswordSecurityService } from "../../services/instanciateService/PasswordSecurity";
+import { Repository } from "../../services/instanciateService/Repository";
 import { ProductEntity } from "../entities/ProductEntity";
 import { UpdateProductUseCase } from "../useCases/UpdateProductUseCase";
 
 /**
  * Sécurité mot de passe
  */
-const passwordSecurity: PasswordSecurityInterface = SecurityFactory.getPasswordSecurity();
+let passwordSecurity: PasswordSecurityInterface = PasswordSecurityService.getPasswordSecurity();
 
 /**
  * Recupération des repositories
  */
-const repositories: Repository = RepositoryActivate.getRepository(RepositoryEnum.inMemory, passwordSecurity)
+const repositories: RepositoryModel =  Repository.getRepositories();
 
 /**
  * Modification d'un produit
@@ -65,7 +65,7 @@ describe('Usecase UpdateProduct', ()=>{
       });    
 
       // Update du produit
-      const updateProductUseCase = new UpdateProductUseCase(repositories);
+      const updateProductUseCase = new UpdateProductUseCase();
       const updateProduct = await updateProductUseCase.execute(productUpdate, user.id);
       
       // Recherche du produit updaté
@@ -112,7 +112,7 @@ describe('Usecase UpdateProduct', ()=>{
       }
 
       // Update du produit
-      const updateProductUseCase = new UpdateProductUseCase(repositories);
+      const updateProductUseCase = new UpdateProductUseCase();
       const updateProduct = await updateProductUseCase.execute(productUpdate, 2);
 
       // Recherche du produit updaté
@@ -179,7 +179,7 @@ describe('Usecase UpdateProduct', ()=>{
       }
 
       // Update du produit
-      const updateProductUseCase = new UpdateProductUseCase(repositories);
+      const updateProductUseCase = new UpdateProductUseCase();
       const updateProduct = await updateProductUseCase.execute(productUpdate, 2);
 
       // Recherche du produit updaté
@@ -246,7 +246,7 @@ describe('Usecase UpdateProduct', ()=>{
       }
 
       // Update du produit
-      const updateProductUseCase = new UpdateProductUseCase(repositories);
+      const updateProductUseCase = new UpdateProductUseCase();
       const updateProduct = await updateProductUseCase.execute(productUpdate, 2);
 
       // Recherche du produit updaté

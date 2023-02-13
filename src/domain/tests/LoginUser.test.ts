@@ -1,23 +1,21 @@
 import { PasswordInvalidException } from '../../exceptions/PasswordInvalidException';
 import { PasswordMissingException } from '../../exceptions/PasswordMissingException';
 import { UserNotFindException } from '../../exceptions/UserNotFindException';
-import { RepositoryActivate } from '../../helpers/repositories/RepositoryActivate';
-import { SecurityFactory } from '../../factories/SecurityFactory';
-import { UserFactory } from '../../factories/UserFactory';
 import { LoginUserUseCase } from '../useCases/LoginUserUseCase';
-import { Repository } from '../../helpers/repositories/Repository';
-import { RepositoryEnum } from '../../helpers/repositories/RepositoryEnum';
+import { RepositoryModel } from '../../helpers/repositories/RepositoryModel';
 import { UserEntity } from '../entities/UserEntity';
+import { Repository } from '../../services/instanciateService/Repository';
+import { PasswordSecurityService } from '../../services/instanciateService/PasswordSecurity';
 
 /**
  * Sécurité mot de passe
  */
-let passwordSecurity: PasswordSecurityInterface = SecurityFactory.getPasswordSecurity();
+let passwordSecurity: PasswordSecurityInterface = PasswordSecurityService.getPasswordSecurity();
 
 /**
  * Recupération des repositories
  */
-const repositories: Repository = RepositoryActivate.getRepository(RepositoryEnum.inMemory, passwordSecurity);
+const repositories: RepositoryModel =  Repository.getRepositories();
 
 beforeEach(async()=>{   
   // Vide la liste des users
@@ -41,10 +39,13 @@ describe('Usecase loginUser', function() {
       const password: string = 'affirmer2011';
 
       // User
-      const user: UserConnectInterface = UserFactory.getUserLogin(email, password);
+      const user: UserConnectInterface = {
+        email: email,
+        password: password
+      };
 
       // UseCase LoginUser
-      const loginUserUseCase = new LoginUserUseCase(repositories, passwordSecurity); 
+      const loginUserUseCase = new LoginUserUseCase(); 
       
       // Recherche de l'utilisateur
       const loginUser: UserEntity|null = await loginUserUseCase.execute(user);
@@ -62,10 +63,13 @@ describe('Usecase loginUser', function() {
       const password: string = 'affirmer2011';
   
       // User
-      const user = UserFactory.getUserLogin(email, password);
+      const user: UserConnectInterface = {
+        email: email,
+        password: password
+      };
 
       // UseCase LoginUser
-      const loginUserUseCase = new LoginUserUseCase(repositories, passwordSecurity); 
+      const loginUserUseCase = new LoginUserUseCase(); 
       
       // Recherche de l'utilisateur
       const loginUser: UserEntity|null = await loginUserUseCase.execute(user);
@@ -84,10 +88,13 @@ describe('Usecase loginUser', function() {
       const password: string = 'afirmer2011';
 
        // User
-       const user = UserFactory.getUserLogin(email, password);
+       const user: UserConnectInterface = {
+        email: email,
+        password: password
+      };;
 
        // UseCase LoginUser
-       const loginUserUseCase = new LoginUserUseCase(repositories, passwordSecurity); 
+       const loginUserUseCase = new LoginUserUseCase(); 
        
        // Recherche de l'utilisateur
        const loginUSer: UserEntity|null = await loginUserUseCase.execute(user);
@@ -105,10 +112,13 @@ describe('Usecase loginUser', function() {
       const password: string = '';
 
       // User
-      const user = UserFactory.getUserLogin(email, password);
+      const user: UserConnectInterface = {
+        email: email,
+        password: password
+      };
 
       // UseCase LoginUser
-      const loginUserUseCase = new LoginUserUseCase(repositories, passwordSecurity); 
+      const loginUserUseCase = new LoginUserUseCase(); 
       
       // Recherche de l'utilisateur
       const loginUser: UserEntity|null = await loginUserUseCase.execute(user);

@@ -1,10 +1,8 @@
 import { UserNotFindException } from "../../exceptions/UserNotFindException";
-import { Repository } from "../../helpers/repositories/Repository";
+import { Repository } from "../../services/instanciateService/Repository";
 import { ProductEntityMapper } from "../dtos/ProductEntityMapper";
 import { ProductEntity } from "../entities/ProductEntity";
-import { ProductRepositoryInterface } from "../ports/repository/ProductRepositoryInterface";
-import { UserProductRepositoryInterface } from "../ports/repository/UserProductRepositoryInterface";
-import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInterface";
+
 
 /**
  * Ajout d'un produit
@@ -12,26 +10,20 @@ import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInter
 class AddProductUseCase {
 
   /**
-   * Repository USer
+   * productRepository
    */
-  protected readonly userRepository: UserRepositoryInterface;
+  private productRepository = Repository.getRepositories().productRepository;
 
   /**
-   * Repository Product
+   * productRepository
    */
-  protected readonly productRepository: ProductRepositoryInterface;
+  private userProductRepository = Repository.getRepositories().userProductRepository;
 
   /**
-   * UserProduct Repository
+   * productRepository
    */
-  protected readonly userProductRepository: UserProductRepositoryInterface;
+  private userRepository = Repository.getRepositories().userRepository;
 
-  constructor(repositories: Repository) {
-    this.userRepository = repositories.userRepository;
-    this.productRepository = repositories.productRepository;
-    this.userProductRepository = repositories.userProductRepository;
-
-  }
 
   /**
    * Ajout d'un produit

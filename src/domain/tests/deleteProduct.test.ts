@@ -1,25 +1,17 @@
 import { ProductNotFindException } from "../../exceptions/ProductNotFindException";
 import { UserNotFindException } from "../../exceptions/UserNotFindException";
 import { UserProductNotMatchException } from "../../exceptions/UserProductNotMatchException";
-import { SecurityFactory } from "../../factories/SecurityFactory";
-import { Repository } from "../../helpers/repositories/Repository";
-import { RepositoryActivate } from "../../helpers/repositories/RepositoryActivate";
-import { RepositoryEnum } from "../../helpers/repositories/RepositoryEnum";
+import { RepositoryModel } from "../../helpers/repositories/RepositoryModel";
 import {UserModel} from "../../infra/adapters/repositories/models/UserModel";
-import { UserProductModel } from "../../infra/adapters/repositories/models/UserProductModel";
+import { Repository } from "../../services/instanciateService/Repository";
 import { ProductEntity } from "../entities/ProductEntity";
 import { AddProductUseCase } from "../useCases/AddProductUseCase";
 import { DeleteProductUseCase } from "../useCases/DeleteProductUseCase";
 
 /**
- * Sécurité mot de passe
- */
-const passwordSecurity: PasswordSecurityInterface = SecurityFactory.getPasswordSecurity();
-
-/**
  * Recupération des repositories
  */
-const repositories: Repository = RepositoryActivate.getRepository(RepositoryEnum.inMemory, passwordSecurity)
+const repositories: RepositoryModel =  Repository.getRepositories();
 
 describe('DeleteProduct UseCase', ()=> {
   let user1: UserModel|null;
@@ -66,11 +58,11 @@ describe('DeleteProduct UseCase', ()=> {
         }
   
         // Ajout du produit
-        const addProductUseCase = new AddProductUseCase(repositories);
+        const addProductUseCase = new AddProductUseCase();
         const addProduct: ProductEntity = await addProductUseCase.execute(product, user1.id);
 
         // Suppression du produit
-        const deleteProductUseCase = new DeleteProductUseCase(repositories);
+        const deleteProductUseCase = new DeleteProductUseCase();
         await deleteProductUseCase.execute(addProduct, user1.id);
         
         // Vérification Suppression produit
@@ -102,11 +94,11 @@ describe('DeleteProduct UseCase', ()=> {
       }
 
       // Ajout du produit
-      const addProductUseCase = new AddProductUseCase(repositories);
+      const addProductUseCase = new AddProductUseCase();
       const addProduct: ProductEntity = await addProductUseCase.execute(product, user2.id);
      
       // Suppression du produit
-      const deleteProductUseCase = new DeleteProductUseCase(repositories);
+      const deleteProductUseCase = new DeleteProductUseCase();
       await deleteProductUseCase.execute(addProduct, user1.id);
 
       
@@ -130,7 +122,7 @@ describe('DeleteProduct UseCase', ()=> {
      }
     
      // Suppression du produit
-     const deleteProductUseCase = new DeleteProductUseCase(repositories);
+     const deleteProductUseCase = new DeleteProductUseCase();
      await deleteProductUseCase.execute({
       id: 2,
       openDate: new Date(),
@@ -166,11 +158,11 @@ describe('DeleteProduct UseCase', ()=> {
       }
 
       // Ajout du produit
-      const addProductUseCase = new AddProductUseCase(repositories);
+      const addProductUseCase = new AddProductUseCase();
       const addProduct: ProductEntity = await addProductUseCase.execute(product, user1.id);
      
       // Suppression du produit
-      const deleteProductUseCase = new DeleteProductUseCase(repositories);
+      const deleteProductUseCase = new DeleteProductUseCase();
       await deleteProductUseCase.execute(addProduct, 3);
  
       

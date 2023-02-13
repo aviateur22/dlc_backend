@@ -1,40 +1,28 @@
 import { ProductNotFindException } from "../../exceptions/ProductNotFindException";
 import { UserNotFindException } from "../../exceptions/UserNotFindException";
 import { UserProductNotMatchException } from "../../exceptions/UserProductNotMatchException";
-import { Repository } from "../../helpers/repositories/Repository";
 import { UserProductModel } from "../../infra/adapters/repositories/models/UserProductModel";
-import { UserEntityMapper } from "../dtos/UserEntityMapper";
-import { ProductRepositoryInterface } from "../ports/repository/ProductRepositoryInterface";
-import { UserProductRepositoryInterface } from "../ports/repository/UserProductRepositoryInterface";
-import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInterface";
+import { Repository } from "../../services/instanciateService/Repository";
 
 /**
  * Usecase Supression Produit
  */
 class DeleteProductUseCase {
-  
-  /**
-   * Interface Repository
-   */
-  protected userRepository: UserRepositoryInterface;
 
   /**
-   * Product Repository
+   * userRepository
    */
-  protected productRepository: ProductRepositoryInterface;
+  private userRepository = Repository.getRepositories().userRepository;
 
   /**
-   * UserProduct repository
+   * productRepository
    */
-  protected userProductRepository: UserProductRepositoryInterface;
-  
-  constructor(
-    repositories: Repository
-    ) {
-    this.userRepository = repositories.userRepository;
-    this.productRepository = repositories.productRepository;
-    this.userProductRepository = repositories.userProductRepository;
-    }
+  private productRepository = Repository.getRepositories().productRepository;
+
+  /**
+   * userProductRepository
+   */
+  private userProductRepository = Repository.getRepositories().userProductRepository;
 
   /**
    * Exécution du useCase LoginUser

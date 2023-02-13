@@ -2,6 +2,7 @@ import { UserProductRepositoryInterface } from "../../../../domain/ports/reposit
 import { UserProductModel } from "../models/UserProductModel";
 
 class InMemoryUserProductRepository implements UserProductRepositoryInterface {
+  
   /**
    * Liste des userProducts
    */
@@ -43,6 +44,22 @@ class InMemoryUserProductRepository implements UserProductRepositoryInterface {
     }
 
     return findUserProduct;
+  }
+
+  /**
+   * Recherche de tous les produit d'un utilisateur
+   * @param userId
+   * @returns {UserProductModel | null}
+   */
+  async findAllByUser(userId: number): Promise<Array<UserProductModel>|null> {
+    // Recherche UserProduct
+    const findUserProducts: Array<UserProductModel> = this.userProducts.filter(x => x.userId === userId);
+
+    if(findUserProducts.length === 0) {
+      return null;
+    }
+
+    return findUserProducts;
   }
 
   /**

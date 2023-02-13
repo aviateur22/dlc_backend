@@ -1,32 +1,19 @@
 import { PasswordMissingException } from "../../exceptions/PasswordMissingException";
 import { EmailFindException } from "../../exceptions/EmailFindException";
-import { UserRepositoryInterface } from "../ports/repository/UserRepositoryInterface";
 import { PasswordNotIdenticalException } from "../../exceptions/PasswordNotIdenticalException";
-import { Repository } from "../../helpers/repositories/Repository";
 import { UserEntity } from "../entities/UserEntity";
 import { UserEntityMapper } from "../dtos/UserEntityMapper";
+import { Repository } from "../../services/instanciateService/Repository";
 
 /**
  * Enregistrement utilisateur
  */
-class RegisterUserUseCase {  
-  /**
-   * Implmentation Repository
-   */
-  userRepository: UserRepositoryInterface;
+class RegisterUserUseCase {
 
   /**
-   * Implmentation Password Sécurité
+   * userRepository
    */
-  passwordSecurity: PasswordSecurityInterface;
-
-  constructor(
-    repositories: Repository,
-    passwordSecurity: PasswordSecurityInterface,
-    ) {
-    this.userRepository = repositories.userRepository;
-    this.passwordSecurity = passwordSecurity;
-  }
+  private userRepository = Repository.getRepositories().userRepository;
 
   /**
    * Inscription nouveau client

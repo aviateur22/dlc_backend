@@ -1,23 +1,21 @@
 import { EmailFindException } from "../../exceptions/EmailFindException";
 import { PasswordMissingException } from "../../exceptions/PasswordMissingException";
 import { PasswordNotIdenticalException } from "../../exceptions/PasswordNotIdenticalException";
-import { RepositoryActivate } from "../../helpers/repositories/RepositoryActivate";
-import { SecurityFactory } from "../../factories/SecurityFactory";
-import { UserFactory } from "../../factories/UserFactory";
 import { RegisterUserUseCase } from "../useCases/RegisterUserUseCase";
-import { Repository } from "../../helpers/repositories/Repository";
-import { RepositoryEnum } from "../../helpers/repositories/RepositoryEnum";
 import { UserEntity } from "../entities/UserEntity";
+import { RepositoryModel } from "../../helpers/repositories/RepositoryModel";
+import { PasswordSecurityService } from "../../services/instanciateService/PasswordSecurity";
+import { Repository } from "../../services/instanciateService/Repository";
 
 /**
  * Sécurité mot de passe
  */
-let passwordSecurity: PasswordSecurityInterface = SecurityFactory.getPasswordSecurity();
+let passwordSecurity: PasswordSecurityInterface = PasswordSecurityService.getPasswordSecurity();
 
 /**
  * Recupération des repositories
  */
-const repositories: Repository = RepositoryActivate.getRepository(RepositoryEnum.inMemory, passwordSecurity);
+const repositories: RepositoryModel =  Repository.getRepositories();
 
 beforeEach(async()=>{   
   // Vide le repository
@@ -40,10 +38,14 @@ describe('Usecase registerUser', function() {
 
       try {
         // User
-        const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
+        const user: UserRegisterInterface = {
+          password: password,
+          confirmPassword: confirmPassword,
+          email: email
+        }
 
         // UseCase registerUser
-        const registerUserUseCase = new RegisterUserUseCase(repositories, passwordSecurity);
+        const registerUserUseCase = new RegisterUserUseCase();
 
         // Ajout utilisateur
         const addUser: UserEntity|null = await registerUserUseCase.execute(user);
@@ -69,10 +71,14 @@ describe('Usecase registerUser', function() {
 
     try {
       // User
-      const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
+      const user: UserRegisterInterface = {
+        password: password,
+        confirmPassword: confirmPassword,
+        email: email
+      }
 
       // UseCase registerUser
-      const registerUserUseCase = new RegisterUserUseCase(repositories, passwordSecurity);
+      const registerUserUseCase = new RegisterUserUseCase();
 
       // Ajout utilisateur
       const addUser: UserEntity|null = await registerUserUseCase.execute(user);
@@ -91,10 +97,14 @@ describe('Usecase registerUser', function() {
 
     try {
       // User
-      const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
+      const user: UserRegisterInterface = {
+        password: password,
+        confirmPassword: confirmPassword,
+        email: email
+      }
 
       // UseCase registerUser
-      const registerUserUseCase = new RegisterUserUseCase(repositories, passwordSecurity);
+      const registerUserUseCase = new RegisterUserUseCase();
 
       // Ajout utilisateur
       const addUser: UserEntity|null = await registerUserUseCase.execute(user);
@@ -113,10 +123,14 @@ describe('Usecase registerUser', function() {
 
     try {
       // User
-      const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
+      const user: UserRegisterInterface = {
+        password: password,
+        confirmPassword: confirmPassword,
+        email: email
+      }
 
       // UseCase registerUser
-      const registerUserUseCase = new RegisterUserUseCase(repositories, passwordSecurity);
+      const registerUserUseCase = new RegisterUserUseCase();
 
       // Ajout utilisateur
       const addUser: UserEntity|null = await registerUserUseCase.execute(user);
@@ -135,10 +149,14 @@ describe('Usecase registerUser', function() {
 
     try {
       // User
-      const user: UserRegisterInterface = UserFactory.getUserRegister(email, password, confirmPassword);
+      const user: UserRegisterInterface = {
+        password: password,
+        confirmPassword: confirmPassword,
+        email: email
+      }
 
       // UseCase registerUser
-      const registerUserUseCase = new RegisterUserUseCase(repositories, passwordSecurity);
+      const registerUserUseCase = new RegisterUserUseCase();
 
       // Ajout utilisateur
       const addUser: UserEntity|null = await registerUserUseCase.execute(user);
