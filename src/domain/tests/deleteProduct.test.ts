@@ -2,11 +2,14 @@ import { ProductNotFindException } from "../../exceptions/ProductNotFindExceptio
 import { UserNotFindException } from "../../exceptions/UserNotFindException";
 import { UserProductNotMatchException } from "../../exceptions/UserProductNotMatchException";
 import { RepositoryModel } from "../../helpers/repositories/RepositoryModel";
-import {UserModel} from "../../infra/adapters/repositories/models/UserModel";
+import { UserModel} from "../../infra/adapters/repositories/models/UserModel";
 import { Repository } from "../../services/instanciateService/Repository";
+import { UseCases } from "../../services/instanciateService/UseCases";
 import { ProductEntity } from "../entities/ProductEntity";
 import { AddProductUseCase } from "../useCases/AddProductUseCase";
 import { DeleteProductUseCase } from "../useCases/DeleteProductUseCase";
+import { Repositories } from "./utility/Repositories";
+import { User } from "./utility/User";
 
 /**
  * Recupération des repositories
@@ -18,28 +21,14 @@ describe('DeleteProduct UseCase', ()=> {
   let user2: UserModel|null;
 
   beforeEach(async()=>{
-    // Vide les produits en base de données
-    await repositories.productRepository.deleteAll();    
-
-    // Vide les utilisateurs en base de données
-    await repositories.userRepository.deleteAll();
-
-    //Vide les userProducts
-    await repositories.userProductRepository.deleteAll();
+    // Reset Repository
+    await Repositories.deleteRepositories();
 
     // Ajout d'un utilisateur
-    user1 = await repositories.userRepository.save({
-      email: 'aviateur22@hotmail.fr',
-      password: 'affirmer2011',
-      confirmPassword: 'affirmer2011'
-    });
+    user1 = await User.createUser();
 
-    // Ajout d'un nouvel utilisateur
-    user2 = await repositories.userRepository.save({
-      email: 'aviateur22@hotmail.f',
-      password: 'affirmer2011',
-      confirmPassword: 'affirmer2011'
-    });
+    // Ajout d'un utilisateur
+    user2 = await User.createUser();
   });
 
   it('Should delete a product', async ()=>{
@@ -58,11 +47,11 @@ describe('DeleteProduct UseCase', ()=> {
         }
   
         // Ajout du produit
-        const addProductUseCase = new AddProductUseCase();
+        const addProductUseCase =  UseCases.getUseCases().addProductUseCase;
         const addProduct: ProductEntity = await addProductUseCase.execute(product, user1.id);
 
         // Suppression du produit
-        const deleteProductUseCase = new DeleteProductUseCase();
+        const deleteProductUseCase = UseCases.getUseCases().deleteProductUseCase;
         await deleteProductUseCase.execute(addProduct, user1.id);
         
         // Vérification Suppression produit
@@ -85,20 +74,16 @@ describe('DeleteProduct UseCase', ()=> {
       };      
       
       // Si utilisateur pas défini
-      if(!user2) {
-        throw new UserNotFindException;
-      }
-
-      if(!user1) {
+      if(!user2 || !user1) {
         throw new UserNotFindException;
       }
 
       // Ajout du produit
-      const addProductUseCase = new AddProductUseCase();
+      const addProductUseCase = UseCases.getUseCases().addProductUseCase;
       const addProduct: ProductEntity = await addProductUseCase.execute(product, user2.id);
      
       // Suppression du produit
-      const deleteProductUseCase = new DeleteProductUseCase();
+      const deleteProductUseCase = UseCases.getUseCases().deleteProductUseCase;
       await deleteProductUseCase.execute(addProduct, user1.id);
 
       
@@ -122,7 +107,7 @@ describe('DeleteProduct UseCase', ()=> {
      }
     
      // Suppression du produit
-     const deleteProductUseCase = new DeleteProductUseCase();
+     const deleteProductUseCase = UseCases.getUseCases().deleteProductUseCase;
      await deleteProductUseCase.execute({
       id: 2,
       openDate: new Date(),
@@ -158,11 +143,11 @@ describe('DeleteProduct UseCase', ()=> {
       }
 
       // Ajout du produit
-      const addProductUseCase = new AddProductUseCase();
+      const addProductUseCase = UseCases.getUseCases().addProductUseCase;
       const addProduct: ProductEntity = await addProductUseCase.execute(product, user1.id);
      
       // Suppression du produit
-      const deleteProductUseCase = new DeleteProductUseCase();
+      const deleteProductUseCase = UseCases.getUseCases().deleteProductUseCase;
       await deleteProductUseCase.execute(addProduct, 3);
  
       

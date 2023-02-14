@@ -5,8 +5,10 @@ import { Repository } from "../../services/instanciateService/Repository";
 import { UseCases } from "../../services/instanciateService/UseCases";
 import { UseCaseService } from "../../services/useCaseService/UseCaseService";
 import { FriendUserEntity } from "../entities/FriendUserEntity";
-import { ProductEntity } from "../entities/ProductEntity";
 import { AddFriendUseCase } from "../useCases/AddFriendUseCase";
+import { User } from "./utility/User";
+import { Product } from "./utility/Product";
+import { Repositories } from "./utility/Repositories";
 
 
 // useCases
@@ -18,62 +20,26 @@ const repositories = Repository.getRepositories();
 describe('AddFreindUseCase', () => {
   beforeEach(async()=>{
     
-    // Vide les produits en base de données
-    await repositories.productRepository.deleteAll();
-
-    // Vide les utilisateurs en base de données
-    await repositories.userRepository.deleteAll();
-
-    //Vide les userProducts
-    await repositories.userProductRepository.deleteAll();
-
-    // Vide les FriendUsers
-    await repositories.friendUserRepository.deleteAll();
+    // Reset Repository
+    await Repositories.deleteRepositories();
   });
 
   it('Should add a friend', async() => {
     try {
+        
      // Ajout d'un utilisateur
-      const user1 = await repositories.userRepository.save({
-        email: 'aviateur22@hotmail.fr',
-        password: 'affirmer2011',
-        confirmPassword: 'affirmer2011'
-      });
+      const user1 = await User.createUser();
 
       // Ajout d'un utilisateur - Role de friends
-      const user2 = await repositories.userRepository.save({
-        email: 'aviateur@hotmail.fr',
-        password: 'affirmer2011',
-        confirmPassword: 'affirmer2011'
-      });
-
-      // Produit à ajouter
-      const products = [
-        {
-          openDate: new Date('2023-01-31 15:25:00'),
-          productImageUrl: 'wwwww//ddddd-d'
-        },
-        {
-          openDate: new Date('2023-01-31 15:25:00'),
-          productImageUrl: 'wwwww//ddddd-d'
-        },
-        {
-          openDate: new Date('2023-01-31 15:25:00'),
-          productImageUrl: 'wwwww//ddddd-d'
-        }
-      ]
+      const user2 = await User.createUser();
 
       // Vérification utilisateur
       if(!user1 || !user2) {
         throw new UserNotFindException();
       }
 
-      // Ajout des produits
-      const addProductUseCase = useCases.addProductUseCase;
-     
-      products.forEach(async product => {
-        await addProductUseCase.execute(product, user1.id);        
-      });
+      // Ajout de produit
+      Product.addProducts(user1.id);
 
       // Ajout d'un ami
       const addFriendUser: AddFriendUserInterface = {

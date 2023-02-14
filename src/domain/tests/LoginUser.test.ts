@@ -5,12 +5,10 @@ import { LoginUserUseCase } from '../useCases/LoginUserUseCase';
 import { RepositoryModel } from '../../helpers/repositories/RepositoryModel';
 import { UserEntity } from '../entities/UserEntity';
 import { Repository } from '../../services/instanciateService/Repository';
-import { PasswordSecurityService } from '../../services/instanciateService/PasswordSecurity';
+import { Repositories } from './utility/Repositories';
+import { User } from './utility/User';
 
-/**
- * Sécurité mot de passe
- */
-let passwordSecurity: PasswordSecurityInterface = PasswordSecurityService.getPasswordSecurity();
+
 
 /**
  * Recupération des repositories
@@ -18,15 +16,11 @@ let passwordSecurity: PasswordSecurityInterface = PasswordSecurityService.getPas
 const repositories: RepositoryModel =  Repository.getRepositories();
 
 beforeEach(async()=>{   
-  // Vide la liste des users
-  await repositories.userRepository.deleteAll();
-
+  // Reset Repository
+  await Repositories.deleteRepositories();
+  
   // Ajout d'un utilisateur
-  await repositories.userRepository.save({
-    email: 'aviateur22@hotmail.fr',
-    password: 'affirmer2011',
-    confirmPassword: 'affirmer2011'
-  });
+  await User.createUser();   
 });
  
 describe('Usecase loginUser', function() {
@@ -35,7 +29,7 @@ describe('Usecase loginUser', function() {
     try {
 
        // Données utilisateur
-      const email: string = 'aviateur22@hotmail.fr';
+      const email: string = 'aviateur22';
       const password: string = 'affirmer2011';
 
       // User
@@ -59,7 +53,7 @@ describe('Usecase loginUser', function() {
   it('Should throw UserNotFindException because user should not be find in database', async function() {
     try {
       // Données utilisateur
-      const email: string = 'aviateur2@hotmail.fr';
+      const email: string = 'aviateur32';
       const password: string = 'affirmer2011';
   
       // User
@@ -84,7 +78,7 @@ describe('Usecase loginUser', function() {
   it('Should throw InvalidPasswordException because user password is unvalid', async ()=>{
     try {
       // Données utilisateur
-      const email: string = 'aviateur22@hotmail.fr';
+      const email: string = 'aviateur22';
       const password: string = 'afirmer2011';
 
        // User
@@ -108,7 +102,7 @@ describe('Usecase loginUser', function() {
   it('Should throw PasswordMissingException because input password is empty', async()=>{
     try {
       // Données utilisateur
-      const email: string = 'aviateur22@hotmail.fr';
+      const email: string = 'aviateur22';
       const password: string = '';
 
       // User

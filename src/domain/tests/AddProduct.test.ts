@@ -3,8 +3,11 @@ import { UserProductNotMatchException } from "../../exceptions/UserProductNotMat
 import { RepositoryModel } from "../../helpers/repositories/RepositoryModel";
 import { UserProductModel } from "../../infra/adapters/repositories/models/UserProductModel";
 import { Repository } from "../../services/instanciateService/Repository";
+import { UseCases } from "../../services/instanciateService/UseCases";
 import { ProductEntity } from "../entities/ProductEntity";
 import { AddProductUseCase } from "../useCases/AddProductUseCase";
+import { Repositories } from "./utility/Repositories";
+import { User } from "./utility/User";
 
 /**
  * Recupération des repositories
@@ -12,24 +15,12 @@ import { AddProductUseCase } from "../useCases/AddProductUseCase";
 const repositories: RepositoryModel =  Repository.getRepositories();
 
 describe('Usecase AddProduct', ()=>{
-  beforeEach(async()=>{
-    // Vide la liste des users
-    await repositories.userRepository.deleteAll();
-
-    // Vide la liste de produit
-    await repositories.productRepository.deleteAll();
-
-    // Vide la liste userProduct
-    await repositories.userProductRepository.deleteAll();
+  beforeEach(async() => {
+    // Reset Repository
+    await Repositories.deleteRepositories();
 
     // Ajout d'un utilisateur
-    await repositories.userRepository.save({
-      email: 'aviateur22@hotmail.fr',
-      password: 'affirmer2011',
-      confirmPassword: 'affirmer2011'
-    });
-
-    
+    await User.createUser();    
   }); 
   
   it('Should add product to user products list', async()=>{
@@ -47,7 +38,7 @@ describe('Usecase AddProduct', ()=>{
        */
       const userId: number = 1;
 
-      const addProductUseCase = new AddProductUseCase();
+      const addProductUseCase = UseCases.getUseCases().addProductUseCase;
       const addProduct: ProductEntity = await addProductUseCase.execute(product, userId);
       
       // Recherche du userProduct
@@ -82,7 +73,7 @@ describe('Usecase AddProduct', ()=>{
        */
       const userId: number =  2;
 
-      const addProductUseCase = new AddProductUseCase();
+      const addProductUseCase = UseCases.getUseCases().addProductUseCase;
       const addProduct: ProductEntity = await addProductUseCase.execute(product, userId);
       
       expect(addProduct).toBeFalsy();
